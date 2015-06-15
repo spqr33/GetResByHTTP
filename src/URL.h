@@ -22,19 +22,21 @@ using std::uint16_t;
 using std::map;
 
 namespace LobKo {
-    class QuerySring;
+    //class QuerySring;
 
     class URL {
+        friend std::ostream& LobKo::operator<<(std::ostream& out, const URL& url);
     public:
 
         enum Default {
             PORT = 80
         };
         URL(const string& original_string); //throw std::invalid_argument
-        //void fill();
-        const string& getHost() const;
-        //URL(const URL& orig);
         ~URL();
+        
+        const string& getHost() const;
+        //void fill();
+        //URL(const URL& orig);
     private:
         string schema_;
         string username_;
@@ -42,8 +44,20 @@ namespace LobKo {
         string host_;
         uint16_t port_; //network order!
         string path_;
-        //LobKo::QuerySring query_string_;
-        string fragment_id;
+
+        class QuerySring {
+        public:
+            //QuerySring(const string& query_string);
+
+            QuerySring() {
+            };
+            ~QuerySring();
+            const string& getQuery() const;
+        private:
+            string full_query_string_;
+            map<string, string> data_; //name value
+        } *query_string_; //todo
+        string fragment_id; //todo
     private:
         inline bool isAllowedSymb(char c) const;
         inline bool isDigit(char c) const;
@@ -70,18 +84,9 @@ namespace LobKo {
             allowedsym_colon_allowedsym_at_allowedsym_colon,
             allowedsym_colon_allowedsym_at_allowedsym_colon_digit
         };
-    public:
-        class QuerySring {
-        public:
-            QuerySring(const string& query_string);
-            QuerySring() {};
-            ~QuerySring();
-            const string& getQuery() const;
-        private:
-            string full_query_string_;
-            map<string, string> data_; //name value
-        } query_string_;
+
     };
+    std::ostream& operator<<(std::ostream& out, const URL& url);
 
     bool LobKo::URL::isAllowedSymb(char c) const {
         char ch = c | (char) 0x20;
@@ -102,6 +107,8 @@ namespace LobKo {
         if (c >= '0' && c <= '9') {
             return true;
         }
+         
+        return false; 
     }
 
     uint16_t LobKo::URL::netOrderPortFromString(const char* first, const char* last) const {
@@ -112,7 +119,7 @@ namespace LobKo {
         unsigned long long port;
 
         inpStr >> port;
-        if (port > ~(uint16_t) (0) || port == 0) {
+        if (port > (uint16_t) (~0) || port == 0) {
             throw std::invalid_argument("received incorrect port");
             return 0;
         }

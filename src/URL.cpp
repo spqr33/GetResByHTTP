@@ -47,7 +47,7 @@ LobKo::URL::URL(const string& original_string) {
         }
         ++p2;
     }
-    ++p2;
+    //++p2;
     p1 = p2;
     const char* pColon = NULL;
     const char* pAt = NULL;
@@ -165,6 +165,7 @@ LobKo::URL::URL(const string& original_string) {
                 if ( !isDigit(ch) ) {
                     throw std::invalid_argument("received incorrect string");
                 }
+                break;
             default:
                 throw std::invalid_argument("received incorrect string");
         }; //switch
@@ -200,10 +201,10 @@ LobKo::URL::URL(const string& original_string) {
         host_ = std::string(p1, pColon - p1);
     } else if ( stateHostname == allowedsym_colon_allowedsym_at_allowedsym ) {
         username_ = std::string(p1, pColon - p1);
-        password_ = std::string(pColon + 1, pAt - pColon);
+        password_ = std::string(pColon + 1, pAt - pColon - 1);
         host_ = std::string(pAt + 1, p2 - pAt - 1);
         port_ = htons(Default::PORT);
-    } else if ( stateHostname == allowedsym_colon_allowedsym_at_allowedsym ) {
+    } else if ( stateHostname == allowedsym_colon_allowedsym_at_allowedsym_colon_digit ) {
         port_ = netOrderPortFromString(pColonTwice + 1, p2 - 1);
         username_ = std::string(p1, pColon - p1);
         password_ = std::string(pColon + 1, pAt - pColon - 1);
@@ -216,7 +217,7 @@ LobKo::URL::URL(const string& original_string) {
         return;
     };
     p1 = p2;
-    for ( ++p2; *p2 != '?' || *p2 != '\0'; ++p2 ) {
+    for ( ++p2; *p2 != '?' && *p2 != '\0'; ++p2 ) {
         ;
     }
     path_ = std::string(p1, p2 - p1);
@@ -235,3 +236,17 @@ LobKo::URL::~URL() {
 const string & LobKo::URL::getHost() const {
     return host_;
 }
+
+std::ostream& LobKo::operator<<(std::ostream& out, const URL& url) {
+    out << "___________________" << std::endl;
+    out << "schema_:" << url.schema_ << ":\n";
+    out << "username_:" << url.username_ << ":\n";
+    out << "password_:" << url.password_ << ":\n";
+    out << "host_:" << url.host_ << ":\n";
+    out << "port_(big endian):" << std::dec << url.port_ << " port_(little endian):" << ntohs(url.port_) << ":\n";
+    out << "path_:" << url.path_ << ":\n";
+    out << "___________________" << std::endl;
+
+    return out;
+};
+
