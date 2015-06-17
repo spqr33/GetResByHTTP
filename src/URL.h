@@ -35,6 +35,7 @@ namespace LobKo {
         ~URL();
         
         const string& getHost() const;
+        const string& getPath() const;
         //void fill();
         //URL(const URL& orig);
     private:
