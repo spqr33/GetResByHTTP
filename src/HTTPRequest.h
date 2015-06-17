@@ -12,7 +12,7 @@
 #include <stdexcept>
 #include <memory>
 #include "URL.h"
-#include "headers/HeaderHolder.h"
+#include "headers/HeadersHolder.h"
 
 using std::shared_ptr;
 

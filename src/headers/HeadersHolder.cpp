@@ -6,7 +6,7 @@
  */
 
 #include <assert.h>
-#include "HeaderHolder.h"
+#include "HeadersHolder.h"
 
 LobKo::HeadersHolder::HeadersHolder() :
 isResultActual_(false) {
