@@ -55,6 +55,11 @@ namespace LobKo {
         void addHeader(shared_ptr<AHeader>);
 
         const string& getResultString() const;
+        const shared_ptr<URL>& getURL() const;
+
+        inline in_addr_t getLastUsedIp() const;
+        inline void setLastUsedIp(in_addr_t);
+
     private:
         HTTPRequestType requestType_;
         HTTPRequestProto requestProto_;
@@ -63,8 +68,16 @@ namespace LobKo {
 
         mutable string resultString_;
         mutable bool isResultStringActual_;
+
+        in_addr_t lastUsedIP_NetOrder_;
     };
 }
 
+in_addr_t LobKo::HTTPRequest::getLastUsedIp() const {
+    return lastUsedIP_NetOrder_;
+}
+void LobKo::HTTPRequest::setLastUsedIp(in_addr_t ip){
+    lastUsedIP_NetOrder_ = ip;
+}
 #endif	/* HTTPREQUEST_H */
 

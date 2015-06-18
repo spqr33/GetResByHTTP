@@ -16,7 +16,8 @@ requestType_(reqType),
 requestProto_(reqProto),
 spURL_(spURL),
 isResultStringActual_(false),
-headerHolder_(new HeadersHolder()) {
+headerHolder_(new HeadersHolder()),
+lastUsedIP_NetOrder_(0) {
     if ( requestProto_.getRequestProto() == HTTPRequestProto::getRequestProtoByType(HTTPRequestProto::Type::HTTP1_1) ) {
         char i = 1;
         //AHeader* pAHeader = new HostHeader(HostHeader::name(), spURL_->getHost());
@@ -51,6 +52,10 @@ const string& LobKo::HTTPRequest::getResultString() const {
     }
 
     return resultString_;
+}
+
+const shared_ptr<LobKo::URL>& LobKo::HTTPRequest::getURL() const {
+    return spURL_;
 }
 
 void LobKo::HTTPRequest::addHeader(shared_ptr<AHeader> sp) {

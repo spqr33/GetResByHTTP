@@ -31,3 +31,17 @@ unsigned int LobKo::OpenedSocketHolder::size() const {
 bool LobKo::OpenedSocketHolder::empty() const {
     return sockets_.empty();
 }
+
+bool LobKo::OpenedSocketHolder::find(int socket) const {
+    if ( empty() ) {
+        return false;
+    } else {
+        if ( sockets_.find(socket) == sockets_.end() ) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+}
+
+

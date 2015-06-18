@@ -36,6 +36,7 @@ namespace LobKo {
         
         const string& getHost() const;
         const string& getPath() const;
+        const uint16_t& getPort() const;
         //void fill();
         //URL(const URL& orig);
     private:

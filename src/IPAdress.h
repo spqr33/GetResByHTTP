@@ -22,6 +22,7 @@ namespace LobKo {
         virtual ~IPAdress();
         void add(struct in_addr*);
         void addMultiple(struct in_addr**);
+        in_addr_t getIP() const;
     private:
         std::list<struct in_addr> lAddr_;
     };

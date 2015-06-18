@@ -19,6 +19,8 @@ namespace LobKo {
         int erase(int socket);
         unsigned int size() const;
         bool empty() const;
+        
+        bool find(int socket) const;
     private:
         OpenedSocketHolder(const OpenedSocketHolder& orig);
 

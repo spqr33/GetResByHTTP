@@ -25,16 +25,51 @@ int LobKo::IPPortToSocketMap::add(in_addr_t s_addr, uint16_t port, int socket) {
 
         return oldSocket;
     } else {
-        map[p] = socket;
+        map_[p] = socket;
     }
-    
+
     return 0;
 }
 
-int LobKo::IPPortToSocketMap::erase(in_addr_t s_addr, uint16_t port) {
+bool LobKo::IPPortToSocketMap::erase(in_addr_t s_addr, uint16_t port) {
     std::pair< in_addr_t, uint16_t> p(s_addr, port);
 
     return map_.erase(p);
+}
+
+bool LobKo::IPPortToSocketMap::erase(mapIter iter) {
+    if ( iter == map_.end() ) {
+        return false;
+    } else {
+        map_.erase(iter);
+        return true;
+    }
+}
+
+bool LobKo::IPPortToSocketMap::find(in_addr_t s_addr, uint16_t port) {
+    std::pair< in_addr_t, uint16_t> p(s_addr, port);
+    mapIter iter;
+
+    iter = map_.find(p);
+    if ( iter == map_.end() ) {
+        return false;
+    }
+    return true;
+}
+
+LobKo::IPPortToSocketMap::mapIter LobKo::IPPortToSocketMap::findIter(in_addr_t s_addr, uint16_t port) {
+    std::pair< in_addr_t, uint16_t> p(s_addr, port);
+    mapIter iter;
+
+    iter = map_.find(p);
+    if ( iter == map_.end() ) {
+        return map_.end();
+    }
+    return iter;
+}
+
+LobKo::IPPortToSocketMap::mapIter LobKo::IPPortToSocketMap::end() {
+    return map_.end();
 }
 
 unsigned int LobKo::IPPortToSocketMap::size() const {

@@ -236,8 +236,13 @@ LobKo::URL::~URL() {
 const string & LobKo::URL::getHost() const {
     return host_;
 }
+
 const string & LobKo::URL::getPath() const {
     return path_;
+}
+
+const uint16_t& LobKo::URL::getPort() const {
+    return port_;
 }
 
 std::ostream& LobKo::operator<<(std::ostream& out, const URL& url) {
