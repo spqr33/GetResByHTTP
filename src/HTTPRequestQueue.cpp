@@ -56,7 +56,7 @@ void LobKo::HTTPRequestQueue::process(int requestsNumber) {
             if ( iter != ipport_socket_map_.end() ) { // We used [ip,port] early
                 int socketfd = (*iter).second;
 
-                if ( qMaster_.openSockMap().get()->find(socketfd) == false ) {
+                if ( qMaster_.openSocketSet().get()->find(socketfd) == false ) {
                     // there is not socketfd in OpenedSocketHolder
                     // it is necessary to delete pair(ip,port) from IPPortToSocketMap
                     // and to initiate creation of a socket
@@ -71,7 +71,7 @@ void LobKo::HTTPRequestQueue::process(int requestsNumber) {
                         std::cout << "Socket was REcreated successfully." << std::endl;
 #endif
                         ipport_socket_map_.add(ip, port, socketFD);
-                        qMaster_.openSockMap().get()->add(socketFD);
+                        qMaster_.openSocketSet().get()->add(socketFD);
 
                         qMaster_.sendQ()->add(socketFD, spHTTPRequest);
                     }
@@ -92,7 +92,7 @@ void LobKo::HTTPRequestQueue::process(int requestsNumber) {
                     std::cout << "Socket was created successfully." << std::endl;
 #endif
                     ipport_socket_map_.add(ip, port, socketFD);
-                    qMaster_.openSockMap()->add(socketFD);
+                    qMaster_.openSocketSet()->add(socketFD);
 
                     qMaster_.sendQ()->add(socketFD, spHTTPRequest);
                 }

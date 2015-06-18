@@ -28,7 +28,7 @@ namespace LobKo {
         
         inline shared_ptr<HTTPRequestQueue> requestQ();
         inline shared_ptr<HTTPRequestErrorsQueue> reqErrorsQ();
-        inline shared_ptr<OpenedSocketHolder> openSockMap();
+        inline shared_ptr<OpenedSocketHolder> openSocketSet();
         inline shared_ptr<SendBySocketQueue> sendQ();
 
     private:
@@ -52,7 +52,7 @@ shared_ptr<LobKo::HTTPRequestErrorsQueue> LobKo::QueuesMaster::reqErrorsQ() {
     return errQueue_;
 }
 
-shared_ptr<LobKo::OpenedSocketHolder> LobKo::QueuesMaster::openSockMap() {
+shared_ptr<LobKo::OpenedSocketHolder> LobKo::QueuesMaster::openSocketSet() {
     return openSockMap_;
 }
 
