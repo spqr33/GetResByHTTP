@@ -34,16 +34,16 @@ namespace LobKo {
         std::string requestType_;
     };
 
-    class HTTPRequestProto {
+    class HTTPProto {
     public:
 
         enum Type {
             HTTP0_9, HTTP1_0, HTTP1_1
         };
-        HTTPRequestProto(HTTPRequestProto::Type); //throw std::invalid_argument
-        ~HTTPRequestProto();
+        HTTPProto(HTTPProto::Type); //throw std::invalid_argument
+        ~HTTPProto();
         const std::string& getRequestProto() const;
-        static const std::string& getRequestProtoByType(HTTPRequestProto::Type);
+        static const std::string& getRequestProtoByType(HTTPProto::Type);
         //bool operator==()
     private:
         std::string protoType_;
@@ -51,7 +51,7 @@ namespace LobKo {
 
     class HTTPRequest {
     public:
-        HTTPRequest(const HTTPRequestType& reqType, shared_ptr<URL> spURL, const HTTPRequestProto& reqProto);
+        HTTPRequest(const HTTPRequestType& reqType, shared_ptr<URL> spURL, const HTTPProto& reqProto);
         //HTTPRequest(const HTTPRequest& orig);
         ~HTTPRequest();
 
@@ -68,7 +68,7 @@ namespace LobKo {
 
     private:
         HTTPRequestType requestType_;
-        HTTPRequestProto requestProto_;
+        HTTPProto requestProto_;
         shared_ptr<URL> spURL_;
         shared_ptr<HeadersHolder> headerHolder_;
 

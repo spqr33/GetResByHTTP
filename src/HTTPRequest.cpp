@@ -11,7 +11,7 @@
 
 LobKo::HTTPRequest::HTTPRequest(const HTTPRequestType& reqType,
         shared_ptr<URL> spURL,
-        const HTTPRequestProto& reqProto) :
+        const HTTPProto& reqProto) :
 requestType_(reqType),
 requestProto_(reqProto),
 spURL_(spURL),
@@ -19,7 +19,7 @@ isResultStringActual_(false),
 headerHolder_(new HeadersHolder()),
 lastUsedIP_NetOrder_(0),
 bytesSent_(0){
-    if ( requestProto_.getRequestProto() == HTTPRequestProto::getRequestProtoByType(HTTPRequestProto::Type::HTTP1_1) ) {
+    if ( requestProto_.getRequestProto() == HTTPProto::getRequestProtoByType(HTTPProto::Type::HTTP1_1) ) {
         char i = 1;
         //AHeader* pAHeader = new HostHeader(HostHeader::name(), spURL_->getHost());
         shared_ptr<AHeader> sp;
@@ -89,7 +89,7 @@ const std::string& LobKo::HTTPRequestType::getRequestType() const {
 
 /////////////////
 
-LobKo::HTTPRequestProto::HTTPRequestProto(HTTPRequestProto::Type type) { //throw std::invalid_argument
+LobKo::HTTPProto::HTTPProto(HTTPProto::Type type) { //throw std::invalid_argument
     switch (type) {
         case HTTP0_9:
             protoType_ = "HTTP/0.9";
@@ -105,15 +105,15 @@ LobKo::HTTPRequestProto::HTTPRequestProto(HTTPRequestProto::Type type) { //throw
     }
 }
 
-LobKo::HTTPRequestProto::~HTTPRequestProto() {
+LobKo::HTTPProto::~HTTPProto() {
     ;
 }
 
-const std::string& LobKo::HTTPRequestProto::getRequestProto() const {
+const std::string& LobKo::HTTPProto::getRequestProto() const {
     return protoType_;
 }
 
-const std::string& LobKo::HTTPRequestProto::getRequestProtoByType(HTTPRequestProto::Type type) {
+const std::string& LobKo::HTTPProto::getRequestProtoByType(HTTPProto::Type type) {
     static string s0_9 = "HTTP/0.9";
     static string s1_0 = "HTTP/1.0";
     static string s1_1 = "HTTP/1.1";

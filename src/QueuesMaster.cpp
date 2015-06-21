@@ -47,7 +47,7 @@ void LobKo::QueuesMaster::loadTasks(shared_ptr<TaskHolder> spTaskHolder) {
         try {
             shared_ptr<URL> spURL(new URL(iterVec->remoteResource()));
             HTTPRequestType type(LobKo::HTTPRequestType::Type::GET);
-            HTTPRequestProto proto(LobKo::HTTPRequestProto::Type::HTTP1_1);
+            HTTPProto proto(LobKo::HTTPProto::Type::HTTP1_1);
 
             shared_ptr<HTTPRequest> spHTTPRequest(new HTTPRequest(type, spURL, proto));
 
