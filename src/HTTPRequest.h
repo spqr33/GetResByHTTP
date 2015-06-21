@@ -13,10 +13,13 @@
 #include <memory>
 #include "URL.h"
 #include "headers/HeadersHolder.h"
+#include "HTTPResponse.h"
 
 using std::shared_ptr;
+using std::weak_ptr;
 
 namespace LobKo {
+    class HTTPResponse;
 
     class HTTPRequestType {
     public:
@@ -59,6 +62,9 @@ namespace LobKo {
 
         inline in_addr_t getLastUsedIp() const;
         inline void setLastUsedIp(in_addr_t);
+        inline int bytesSent() const;
+        inline void setBytesSent(int bytes);
+        inline void setHTTPResponse(shared_ptr<HTTPResponse> sp);
 
     private:
         HTTPRequestType requestType_;
@@ -70,14 +76,30 @@ namespace LobKo {
         mutable bool isResultStringActual_;
 
         in_addr_t lastUsedIP_NetOrder_;
+        int bytesSent_;
+
+        std::weak_ptr<HTTPResponse> response_;
     };
 }
 
 in_addr_t LobKo::HTTPRequest::getLastUsedIp() const {
     return lastUsedIP_NetOrder_;
 }
-void LobKo::HTTPRequest::setLastUsedIp(in_addr_t ip){
+
+void LobKo::HTTPRequest::setLastUsedIp(in_addr_t ip) {
     lastUsedIP_NetOrder_ = ip;
+}
+
+int LobKo::HTTPRequest::bytesSent() const {
+    return bytesSent_;
+}
+
+void LobKo::HTTPRequest::setBytesSent(int bytes) {
+    bytesSent_ = bytes;
+}
+
+void LobKo::HTTPRequest::setHTTPResponse(shared_ptr<LobKo::HTTPResponse> sp) {
+    response_ = sp;
 }
 #endif	/* HTTPREQUEST_H */
 

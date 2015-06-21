@@ -16,6 +16,7 @@
 #include <bits/shared_ptr_base.h>
 #include "HTTPRequest.h"
 #include "QueuesMaster.h"
+#include "TaskHolder.h"
 
 using namespace std;
 using namespace LobKo;
@@ -77,13 +78,15 @@ int main(int argc, char** argv) {
     //    std::cout << "!!!!" << hex << *(pair.second).get() << std::endl << dec;
     
     
-    string s10("http://ya.ru/");
-    shared_ptr<URL> spUrl10(new URL(s10));
-    shared_ptr<HTTPRequest> request(new HTTPRequest (HTTPRequestType(HTTPRequestType::GET), spUrl10, HTTPRequestProto(HTTPRequestProto::HTTP1_1)));
-
-    std::cout << "Request String:" << std::endl << request->getResultString() << std::endl;
+//    string s10("http://ya.ru/");
+//    shared_ptr<URL> spUrl10(new URL(s10));
+//    shared_ptr<HTTPRequest> request(new HTTPRequest (HTTPRequestType(HTTPRequestType::GET), spUrl10, HTTPRequestProto(HTTPRequestProto::HTTP1_1)));
+//
+//    std::cout << "Request String:" << std::endl << request->getResultString() << std::endl;
     ////////////////////////////////////
-    QueuesMaster qmaster(request);
+    shared_ptr<TaskHolder> spTaskHolder = TaskHolderBuilder::build();
+    //QueuesMaster qmaster(request);
+    QueuesMaster qmaster(spTaskHolder);
     qmaster.process();
 
 

@@ -13,6 +13,8 @@
 #include <memory>
 #include "HTTPRequest.h"
 #include "QueuesMaster.h"
+#include <queue>
+#include <map>
 
 namespace LobKo {
     class QueuesMaster;
@@ -23,9 +25,14 @@ namespace LobKo {
         ~SendBySocketQueue();
 
         void add(int socketFD, shared_ptr<HTTPRequest>);
+        void process();
     private:
         SendBySocketQueue(const SendBySocketQueue& orig);
         QueuesMaster& qMaster_;
+        int write(int socketFD, const char* begin, size_t n) const;
+
+        //std::queue<int> socketQueue_;
+        std::map<int, std::queue<shared_ptr<HTTPRequest> > > map_;
 
     };
 

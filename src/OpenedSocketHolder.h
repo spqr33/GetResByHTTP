@@ -8,10 +8,17 @@
 #ifndef OPENEDSOCKETHOLDER_H
 #define	OPENEDSOCKETHOLDER_H
 #include <set>
+//#include "SendBySocketQueue.h"
+//#include "RecvBysocketQueue.h"
 
 namespace LobKo {
+    class SendBySocketQueue;
+    class RecvBySocketQueue;
 
     class OpenedSocketHolder {
+        //friend void SendBySocketQueue::process();
+        friend class SendBySocketQueue;
+        friend class RecvBySocketQueue;
     public:
         OpenedSocketHolder();
         ~OpenedSocketHolder();
@@ -19,7 +26,7 @@ namespace LobKo {
         int erase(int socket);
         unsigned int size() const;
         bool empty() const;
-        
+
         bool find(int socket) const;
     private:
         OpenedSocketHolder(const OpenedSocketHolder& orig);

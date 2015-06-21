@@ -28,6 +28,10 @@ void LobKo::HTTPRequestQueue::add(shared_ptr<HTTPRequest> sp) {
 }
 
 void LobKo::HTTPRequestQueue::process(int requestsNumber) {
+#ifdef HTTPREQUESTQUEUE_H_DEBUG
+    std::cout << "HTTPRequestQueue size:" << queue_.size() << std::endl;
+#endif
+
     shared_ptr<HTTPRequest> spHTTPRequest = queue_.front();
     const std::string& hostname = spHTTPRequest->getURL()->getHost();
 
@@ -89,12 +93,13 @@ void LobKo::HTTPRequestQueue::process(int requestsNumber) {
                     this->queue_.pop();
                 } else {
 #ifdef HTTPREQUESTQUEUE_H_DEBUG
-                    std::cout << "Socket was created successfully." << std::endl;
+                    std::cout << "Socket was created successfully" << std::endl;
 #endif
                     ipport_socket_map_.add(ip, port, socketFD);
                     qMaster_.openSocketSet()->add(socketFD);
 
                     qMaster_.sendQ()->add(socketFD, spHTTPRequest);
+
                 }
             }
         }

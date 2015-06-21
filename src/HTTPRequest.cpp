@@ -17,7 +17,8 @@ requestProto_(reqProto),
 spURL_(spURL),
 isResultStringActual_(false),
 headerHolder_(new HeadersHolder()),
-lastUsedIP_NetOrder_(0) {
+lastUsedIP_NetOrder_(0),
+bytesSent_(0){
     if ( requestProto_.getRequestProto() == HTTPRequestProto::getRequestProtoByType(HTTPRequestProto::Type::HTTP1_1) ) {
         char i = 1;
         //AHeader* pAHeader = new HostHeader(HostHeader::name(), spURL_->getHost());
