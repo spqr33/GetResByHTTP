@@ -7,6 +7,7 @@
 
 #include "AHeader.h"
 #include "HostHeader.h"
+#include "Content_Length.h"
 
 LobKo::AHeader::AHeader(const string& name, const string& value) :
 name_(name),
@@ -19,6 +20,9 @@ LobKo::AHeader::~AHeader() {
 shared_ptr<LobKo::AHeader> LobKo::AHeader::makeHeader(const string& name, const string& value) {
     if ( name == "Host" ) {
         return shared_ptr<AHeader>(new HostHeader(name, value));
+    }
+    if ( name == "Content-Length" ) {
+        return shared_ptr<AHeader>(new Content_Length(name, value));
     }
 }
 

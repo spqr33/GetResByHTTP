@@ -61,6 +61,9 @@ void LobKo::QueuesMaster::loadTasks(shared_ptr<TaskHolder> spTaskHolder) {
 
 void LobKo::QueuesMaster::process() {
     reqQueue_->process();
+    sendQueue_->process();
+    recvQueue_->process();
+    
 
 
     //std::queue<shared_ptr<HTTPRequest> > queue_ =  errQueue_->getQueue();

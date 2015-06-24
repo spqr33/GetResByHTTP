@@ -14,6 +14,7 @@
 #include "URL.h"
 #include "headers/HeadersHolder.h"
 #include "HTTPResponse.h"
+#include "headers/Content_Length.h"
 
 using std::shared_ptr;
 using std::weak_ptr;
@@ -71,6 +72,7 @@ namespace LobKo {
         HTTPProto requestProto_;
         shared_ptr<URL> spURL_;
         shared_ptr<HeadersHolder> headerHolder_;
+        shared_ptr<Content_Length> spContentLength_;
 
         mutable string resultString_;
         mutable bool isResultStringActual_;
@@ -78,7 +80,7 @@ namespace LobKo {
         in_addr_t lastUsedIP_NetOrder_;
         int bytesSent_;
 
-        std::weak_ptr<HTTPResponse> response_;
+        std::weak_ptr<HTTPResponse> wpHTTPResponse_;
     };
 }
 
@@ -99,7 +101,7 @@ void LobKo::HTTPRequest::setBytesSent(int bytes) {
 }
 
 void LobKo::HTTPRequest::setHTTPResponse(shared_ptr<LobKo::HTTPResponse> sp) {
-    response_ = sp;
+    wpHTTPResponse_ = sp;
 }
 #endif	/* HTTPREQUEST_H */
 

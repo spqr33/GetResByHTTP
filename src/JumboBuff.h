@@ -14,6 +14,7 @@ namespace LobKo {
         explicit   JumboBuff(unsigned int buffSize);
         ~JumboBuff();
     //private:
+        void reInit();
         JumboBuff(const JumboBuff& orig);
         
         const unsigned int buffSize_;

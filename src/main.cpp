@@ -27,19 +27,19 @@ using std::string;
  * 
  */
 int main(int argc, char** argv) {
-//    DomainNameResolver resolver;
+    //    DomainNameResolver resolver;
     //string hostname("ukr.net");
-//    string hostname("cnn.com");
-//    //string hostname("s-R40-R41");
-//    std::pair<DNSResult, shared_ptr<IPAdress> > pair;
-//    pair = resolver(hostname);
-//
-//    if ( pair.first == LobKo::DNSResult::DNS_RESOLVE_ERROR ) {
-//        std::cout << "DNS Error occured" << std::endl;
-//
-//        return EXIT_FAILURE;
-//    }
-//    std::cout << "!!!!" << hex << *(pair.second).get() << std::endl << dec;
+    //    string hostname("cnn.com");
+    //    //string hostname("s-R40-R41");
+    //    std::pair<DNSResult, shared_ptr<IPAdress> > pair;
+    //    pair = resolver(hostname);
+    //
+    //    if ( pair.first == LobKo::DNSResult::DNS_RESOLVE_ERROR ) {
+    //        std::cout << "DNS Error occured" << std::endl;
+    //
+    //        return EXIT_FAILURE;
+    //    }
+    //    std::cout << "!!!!" << hex << *(pair.second).get() << std::endl << dec;
 
     //    string s1("http:");
     //    string s2("http://");
@@ -76,18 +76,29 @@ int main(int argc, char** argv) {
     //        return EXIT_FAILURE;
     //    }
     //    std::cout << "!!!!" << hex << *(pair.second).get() << std::endl << dec;
-    
-    
-//    string s10("http://ya.ru/");
-//    shared_ptr<URL> spUrl10(new URL(s10));
-//    shared_ptr<HTTPRequest> request(new HTTPRequest (HTTPRequestType(HTTPRequestType::GET), spUrl10, HTTPRequestProto(HTTPRequestProto::HTTP1_1)));
-//
-//    std::cout << "Request String:" << std::endl << request->getResultString() << std::endl;
+
+
+    //    string s10("http://ya.ru/");
+    //    shared_ptr<URL> spUrl10(new URL(s10));
+    //    shared_ptr<HTTPRequest> request(new HTTPRequest (HTTPRequestType(HTTPRequestType::GET), spUrl10, HTTPRequestProto(HTTPRequestProto::HTTP1_1)));
+    //
+    //    std::cout << "Request String:" << std::endl << request->getResultString() << std::endl;
     ////////////////////////////////////
     shared_ptr<TaskHolder> spTaskHolder = TaskHolderBuilder::build();
     //QueuesMaster qmaster(request);
     QueuesMaster qmaster(spTaskHolder);
     qmaster.process();
+
+
+
+//    char c = '7';
+//    std::string s = "aa";
+//    const char * pc1;
+//    const char* pc2 = &c;
+//    pc1 = pc2;
+//    s.append(pc1, pc2-pc1+1);
+//    std::cout << s << ":" << endl;
+    
 
 
     std::cout << "main exit" << endl;

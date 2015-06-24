@@ -21,3 +21,7 @@ LobKo::JumboBuff::~JumboBuff() {
     delete [] start_;
 }
 
+void LobKo::JumboBuff::reInit() {
+    currentPos_ = start_;
+    watermark_ = start_;
+}

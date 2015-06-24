@@ -29,7 +29,7 @@ namespace LobKo {
     private:
         SendBySocketQueue(const SendBySocketQueue& orig);
         QueuesMaster& qMaster_;
-        int write(int socketFD, const char* begin, size_t n) const;
+        int writeToSocket(int socketFD, const char* begin, size_t n) const;
 
         //std::queue<int> socketQueue_;
         std::map<int, std::queue<shared_ptr<HTTPRequest> > > map_;

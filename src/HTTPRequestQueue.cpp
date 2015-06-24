@@ -89,7 +89,7 @@ void LobKo::HTTPRequestQueue::process(int requestsNumber) {
                 int socketFD;
 
                 if ( (socketFD = getConnectedSocket(ip, port)) < 0 ) { //Error while connecting
-                    this->qMaster_.reqErrorsQ()->add(spHTTPRequest);
+                    qMaster_.reqErrorsQ()->add(spHTTPRequest);
                     this->queue_.pop();
                 } else {
 #ifdef HTTPREQUESTQUEUE_H_DEBUG
