@@ -20,7 +20,7 @@ namespace LobKo {
         explicit SaveFile(const std::string& saveTo_FileName); //throw std::runtime_error
         virtual ~SaveFile();
 
-        result takeData(const char* const startBuf, const char* const endBuf, uint64_t totaDataSize);
+        virtual result takeData(const char* const startBuf, const char* const endBuf, uint64_t totaDataSize);
     private:
         SaveFile(const SaveFile& orig);
         

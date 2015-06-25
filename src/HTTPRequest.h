@@ -15,6 +15,8 @@
 #include "headers/HeadersHolder.h"
 #include "HTTPResponse.h"
 #include "headers/Content_Length.h"
+#include "Action.h"
+
 
 using std::shared_ptr;
 using std::weak_ptr;
@@ -67,12 +69,15 @@ namespace LobKo {
         inline void setBytesSent(int bytes);
         inline void setHTTPResponse(shared_ptr<HTTPResponse> sp);
 
+        inline void setAction(shared_ptr<Action> newAction);
+        inline const shared_ptr<Action> getAction() const;
     private:
         HTTPRequestType requestType_;
         HTTPProto requestProto_;
         shared_ptr<URL> spURL_;
         shared_ptr<HeadersHolder> headerHolder_;
-        shared_ptr<Content_Length> spContentLength_;
+        //shared_ptr<Content_Length> spContentLength_;
+        shared_ptr<Action> spAction_;
 
         mutable string resultString_;
         mutable bool isResultStringActual_;
@@ -102,6 +107,14 @@ void LobKo::HTTPRequest::setBytesSent(int bytes) {
 
 void LobKo::HTTPRequest::setHTTPResponse(shared_ptr<LobKo::HTTPResponse> sp) {
     wpHTTPResponse_ = sp;
+}
+
+void LobKo::HTTPRequest::setAction(shared_ptr<Action> newAction) {
+    spAction_ = newAction;
+}
+
+const shared_ptr<LobKo::Action> LobKo::HTTPRequest::getAction() const {
+    return spAction_;
 }
 #endif	/* HTTPREQUEST_H */
 

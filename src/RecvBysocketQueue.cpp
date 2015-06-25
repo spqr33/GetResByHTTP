@@ -10,6 +10,7 @@
 #include "HTTPResponse.h"
 #include <vector>
 #include <unistd.h> //close()
+#include "Action.h"
 
 //#include <algorithm>
 
@@ -126,6 +127,7 @@ void LobKo::RecvBySocketQueue::process() {
                             if ( status == HTTPResponse::PARSE_ALL_HEADERS_SUCCESS ) {
                                 break;
                             } else if ( status == HTTPResponse::PARSE_SUCCESS ) {
+                                spHTTPResp->assignKnownHeader(spHTTPResp->get_curr_name(), spHTTPResp->get_curr_value());
 #ifdef RECVBYSOCKETQUEUE_H_DEBUG
                                 std::cout << "" << spHTTPResp->get_curr_name() << ":"
                                         << "" << spHTTPResp->get_curr_value() << "" << std::endl;
@@ -149,22 +151,42 @@ void LobKo::RecvBySocketQueue::process() {
                             //main for (; iterMap != iterMapEnd; ++iterMap )
                         }
                         /////////////////!!!
-
-
                     }
                     if ( spHTTPResp->get_parse_state() == HTTPResponse::state_headers_finished ) {
+                        //dont forget about codes 1xx
 #ifdef RECVBYSOCKETQUEUE_H_DEBUG
                         // error while parsing occured  *
                         std::cout << "Headers parsing finished" << std::endl;
 #endif                         
+                        if ( spHTTPResp->get_status_code() == "200" && spHTTPResp->spContent_Length.use_count() != 0 ) {
+                            shared_ptr<Action> spAction = spHTTPResp->getLinkedHTTPRequest()->getAction();
+                            Action::result action_res;
+
+                            action_res = spAction->takeData(spHTTPResp->getJumboBuff()->currentPos_,
+                                    spHTTPResp->getJumboBuff()->watermark_,
+                                    spHTTPResp->spContent_Length->getValueAsDecimalNumber());
+
+                            if ( action_res == Action::result::ERROR_OCCURED ) {
+                                //error while writing results
+                                qMaster_.reqErrorsQ()->add(spHTTPResp->getLinkedHTTPRequest());
+                                q.pop();
+                            } else if ( action_res == Action::result::NOT_ALL_DATA_RCVD ) {
+                                spHTTPResp->getJumboBuff()->currentPos_ = spHTTPResp->getJumboBuff()->start_;
+                            } else if ( action_res == Action::result::ALL_DATA_RCVD ) {
+                                //spHTTPResp->
+                                q.pop();
+                            }
+                        }
+
+
+
+
                     }
                 } // end else { // reading successful
 
 
-
-
                 //if Response fully processed
-                q.pop();
+                //q.pop();
                 if ( q.empty() ) {
                     vecEraseItersAtEnd.push_back(iterMap);
                 }

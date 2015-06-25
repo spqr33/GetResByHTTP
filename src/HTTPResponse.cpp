@@ -7,6 +7,7 @@
 
 #include "HTTPResponse.h"
 #include "utils.h"
+#include <algorithm>
 
 LobKo::HTTPResponse::HTTPResponse(shared_ptr<HTTPRequest>& sp) :
 spHTTPRequest_(sp) {
@@ -283,10 +284,10 @@ LobKo::HTTPResponse::parseStatus LobKo::HTTPResponse::parseHeaderLine() {
     const char* &water_mark = spJumboBuff_->watermark_;
     const char* const end = spJumboBuff_->start_ + spJumboBuff_->buffSize_;
 
-//    if ( parse_state != state_response_line_finished ||
-//            parse_state != state_headers ) {
-//        return PARSE_NOT_CORRESPOND_STATE;
-//    }
+    //    if ( parse_state != state_response_line_finished ||
+    //            parse_state != state_headers ) {
+    //        return PARSE_NOT_CORRESPOND_STATE;
+    //    }
     parse_state = state_headers;
 
     for ( char ch; cur_pos < water_mark; ) {
@@ -464,4 +465,22 @@ LobKo::HTTPResponse::parseStatus LobKo::HTTPResponse::parseHeaderLine() {
     } //end for (  char ch; cur_pos < water_mark;  ) {
 
     return PARSE_WATERMARK_REACHED;
+}
+
+void LobKo::HTTPResponse::assignKnownHeader(const string& name, const string& value) {
+    string low_case_name = name;
+    shared_ptr<AHeader> spHeader;
+
+    low_case_name.resize(name.size());
+
+    std::transform(name.begin(), name.end(), low_case_name.begin(), ::tolower);
+    if ( low_case_name == "content-length" ) {
+        //AHeader* pAheader;// = 
+        shared_ptr<Content_Length> spHeader(new Content_Length(name, value));
+
+        spContent_Length = spHeader;
+    } else {
+        unsupported_headers_[name] = value;
+    }
+
 }

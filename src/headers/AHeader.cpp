@@ -29,6 +29,7 @@ shared_ptr<LobKo::AHeader> LobKo::AHeader::makeHeader(const string& name, const 
 const string& LobKo::AHeader::getName() const {
     return name_;
 }
+
 const string& LobKo::AHeader::getValue() const {
     return value_;
 }

@@ -11,9 +11,9 @@
 #include "HTTPRequest.h"
 #include "JumboBuff.h"
 #include <string>
+#include "headers/Content_Length.h"
+#include <map>
 
-
-using std::weak_ptr;
 
 namespace LobKo {
     class HTTPRequest;
@@ -33,6 +33,7 @@ namespace LobKo {
             state_response_line_finished,
             state_headers,
             state_headers_finished,
+            state_body_finished
 
         };
 
@@ -97,13 +98,19 @@ namespace LobKo {
 
         parseStatus parseResponseLine();
         parseStatus parseHeaderLine();
+
+        void assignKnownHeader(const string& name, const string& value);
+
+        inline const shared_ptr<HTTPRequest> getLinkedHTTPRequest() const;
+        shared_ptr<Content_Length> spContent_Length;
     private:
         HTTPResponse(const HTTPResponse& orig);
         HTTPResponse& operator=(HTTPResponse& orig);
 
         shared_ptr<HTTPRequest> spHTTPRequest_;
         shared_ptr<JumboBuff> spJumboBuff_;
-        shared_ptr<HeadersHolder> headerHolder_;
+        //shared_ptr<HeadersHolder> headerHolder_;
+        std::map<string, string> unsupported_headers_;
 
         std::string proto_;
         std::string status_code_;
@@ -196,6 +203,10 @@ const string& LobKo::HTTPResponse::get_curr_name() const {
 
 const string& LobKo::HTTPResponse::get_curr_value() const {
     return curr_header_value;
+}
+
+const shared_ptr<LobKo::HTTPRequest> LobKo::HTTPResponse::getLinkedHTTPRequest() const {
+    return spHTTPRequest_;
 }
 #endif	/* HTTPRESPONSE_H */
 

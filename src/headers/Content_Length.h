@@ -21,9 +21,10 @@ namespace LobKo {
         Content_Length(const Content_Length& orig);
         virtual ~Content_Length();
 
+        unsigned int getValueAsDecimalNumber() const;
+        static unsigned int getValueAsDecimalNumber(Content_Length& p);
         static const string& name();
     private:
-
     };
 }
 

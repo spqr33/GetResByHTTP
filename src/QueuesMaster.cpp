@@ -7,6 +7,8 @@
 
 #include "QueuesMaster.h"
 #include <stdexcept>
+#include "Action.h"
+#include "SaveFile.h"
 
 LobKo::QueuesMaster::QueuesMaster(shared_ptr<HTTPRequest> initialisationHTTPRequest) :
 reqQueue_(new HTTPRequestQueue(this)),
@@ -51,9 +53,14 @@ void LobKo::QueuesMaster::loadTasks(shared_ptr<TaskHolder> spTaskHolder) {
 
             shared_ptr<HTTPRequest> spHTTPRequest(new HTTPRequest(type, spURL, proto));
 
+            shared_ptr<Action> spAction(new SaveFile(iterVec->localFileName()));
+            spHTTPRequest->setAction(spAction);
+
             reqQueue_->add(spHTTPRequest);
 
         } catch (const std::invalid_argument& ia) {
+            iterVec->setTaskResult(LobKo::Task::taskResult::TASK_ERROR);
+        } catch (const std::runtime_error& re) {
             iterVec->setTaskResult(LobKo::Task::taskResult::TASK_ERROR);
         }
     }
@@ -63,7 +70,7 @@ void LobKo::QueuesMaster::process() {
     reqQueue_->process();
     sendQueue_->process();
     recvQueue_->process();
-    
+
 
 
     //std::queue<shared_ptr<HTTPRequest> > queue_ =  errQueue_->getQueue();
