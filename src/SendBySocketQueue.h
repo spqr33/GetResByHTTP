@@ -26,6 +26,7 @@ namespace LobKo {
 
         void add(int socketFD, shared_ptr<HTTPRequest>);
         void process();
+        inline int getQueueSize() const;
     private:
         SendBySocketQueue(const SendBySocketQueue& orig);
         QueuesMaster& qMaster_;
@@ -36,6 +37,10 @@ namespace LobKo {
 
     };
 
-}
+};
+
+int LobKo::SendBySocketQueue::getQueueSize() const {
+    return map_.size();
+};
 #endif	/* SENDBYSOCKETQUEUE_H */
 

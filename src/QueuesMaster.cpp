@@ -66,10 +66,84 @@ void LobKo::QueuesMaster::loadTasks(shared_ptr<TaskHolder> spTaskHolder) {
     }
 }
 
-void LobKo::QueuesMaster::process() {
-    reqQueue_->process();
-    sendQueue_->process();
-    recvQueue_->process();
+void LobKo::QueuesMaster::process(int simultaneous_resources_recvng) {
+    bool cannot_exit = true;
+
+    int size_HTTPRequestQueue = reqQueue_->getQueueSize();
+    int size_RecvBySocketQueue = recvQueue_->getQueueSize();
+    int size_SendBySocketQueue; // = recvQueue_->getQueueSize();
+    while (cannot_exit == true) {
+
+        int n;
+        if ( simultaneous_resources_recvng - size_RecvBySocketQueue < size_HTTPRequestQueue ) {
+            n = simultaneous_resources_recvng - size_RecvBySocketQueue;
+        } else {
+            n = size_HTTPRequestQueue;
+        }
+        for (; n > 0; --n ) {
+            reqQueue_->process();
+        }
+        sendQueue_->process();
+        recvQueue_->process();
+
+        size_HTTPRequestQueue = reqQueue_->getQueueSize();
+        size_RecvBySocketQueue = recvQueue_->getQueueSize();
+        size_SendBySocketQueue = recvQueue_->getQueueSize();
+
+        if ( size_RecvBySocketQueue == 0 ) {
+            if ( size_RecvBySocketQueue == size_HTTPRequestQueue ) {
+                if ( size_RecvBySocketQueue == size_SendBySocketQueue ) {
+                    cannot_exit = false;
+                }
+            }
+        }
+    }
+
+
+    //    reqQueue_->process();
+    //    reqQueue_->process();
+    //    reqQueue_->process();
+    //    //reqQueue_->process();
+    //    //reqQueue_->process();
+    //    //sendQueue_->process();
+    //    sendQueue_->process();
+    //    recvQueue_->process();
+    //    recvQueue_->process();
+    //    recvQueue_->process();
+    //    recvQueue_->process();
+    //    recvQueue_->process();
+    //    recvQueue_->process();
+    //    recvQueue_->process();
+    //    recvQueue_->process();
+    //    recvQueue_->process();
+    //    recvQueue_->process();
+    //    recvQueue_->process();
+    //    recvQueue_->process();
+    //    recvQueue_->process();
+    //    recvQueue_->process();
+    //    recvQueue_->process();
+    //    recvQueue_->process();
+    //    recvQueue_->process();
+    //    recvQueue_->process();
+    //    recvQueue_->process();
+    //    recvQueue_->process();
+    //    recvQueue_->process();
+    //    recvQueue_->process();
+    //    recvQueue_->process();
+    //    recvQueue_->process();
+    //    recvQueue_->process();
+    //    recvQueue_->process();
+    //    recvQueue_->process();
+    //    recvQueue_->process();
+    //    recvQueue_->process();
+    //    recvQueue_->process();
+    //    recvQueue_->process();
+    //    recvQueue_->process();
+    //    recvQueue_->process();
+    //    recvQueue_->process();
+    //    recvQueue_->process();
+    //    recvQueue_->process();
+    //    recvQueue_->process();
 
 
 

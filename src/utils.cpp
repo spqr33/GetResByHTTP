@@ -38,9 +38,9 @@ LobKo::DomainNameResolver::operator ()(const string& host) {
         //        if ( *(pHostEnt->h_addr_list) == NULL ) {
         //            cerr << "Host haven't any IP entry" << endl;
         //        } else {
-        cerr << "*struct in_addr*  p_in_addr == " << hex << p_in_addr << endl;
-        cerr << "*(pHostEnt->h_addr_list) == " << hex << *(pHostEnt->h_addr_list) << endl;
-        cerr << "*pp_in_addr_list == " << hex << *pp_in_addr_list << endl;
+        //cerr << "*struct in_addr*  p_in_addr == " << hex << p_in_addr << endl;
+        //cerr << "*(pHostEnt->h_addr_list) == " << hex << *(pHostEnt->h_addr_list) << endl;
+       // cerr << "*pp_in_addr_list == " << hex << *pp_in_addr_list << endl;
 
         //std::cerr << "p_in_addr->s_addr == " << p_in_addr->s_addr<< std::endl;
         //std::cerr << "ntohl(p_in_addr->s_addr) == " << ntohl(p_in_addr->s_addr)<< std::endl;

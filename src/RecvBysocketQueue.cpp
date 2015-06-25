@@ -112,6 +112,9 @@ void LobKo::RecvBySocketQueue::process() {
                             // error while parsing occured  *
 #ifdef RECVBYSOCKETQUEUE_H_DEBUG
                             std::cout << "Error while parsing occured" << std::endl;
+
+                            qMaster_.reqErrorsQ()->add(spHTTPResp->getLinkedHTTPRequest());
+                            q.pop();
 #endif                          
                         }
                     } // end if ( spHTTPResp->get_parse_state() == HTTPResponse::parse_states::state_response_line ) {
@@ -141,7 +144,11 @@ void LobKo::RecvBySocketQueue::process() {
                                 // error while parsing occured  *
 #ifdef RECVBYSOCKETQUEUE_H_DEBUG
                                 // error while parsing occured  *
+                                parseHeadersExit_Flag = false;
                                 std::cout << "Error while header parsing occured" << std::endl;
+
+                                qMaster_.reqErrorsQ()->add(spHTTPResp->getLinkedHTTPRequest());
+                                q.pop();
 #endif     
                             }
                         }
@@ -167,20 +174,29 @@ void LobKo::RecvBySocketQueue::process() {
                                     spHTTPResp->spContent_Length->getValueAsDecimalNumber());
 
                             if ( action_res == Action::result::ERROR_OCCURED ) {
+                                // error while saving occured  *
+#ifdef RECVBYSOCKETQUEUE_H_DEBUG
+                                std::cout << "Error while saving occured  **************************" << std::endl;
+#endif  
                                 //error while writing results
                                 qMaster_.reqErrorsQ()->add(spHTTPResp->getLinkedHTTPRequest());
                                 q.pop();
                             } else if ( action_res == Action::result::NOT_ALL_DATA_RCVD ) {
-                                spHTTPResp->getJumboBuff()->currentPos_ = spHTTPResp->getJumboBuff()->start_;
+#ifdef RECVBYSOCKETQUEUE_H_DEBUG
+                                std::cout << "Saving file  **************************" << std::endl;
+#endif  
+                                //spHTTPResp->getJumboBuff()->currentPos_ = spHTTPResp->getJumboBuff()->start_;
+                                spHTTPResp->getJumboBuff()->reInit();
                             } else if ( action_res == Action::result::ALL_DATA_RCVD ) {
-                                //spHTTPResp->
+#ifdef RECVBYSOCKETQUEUE_H_DEBUG
+                                std::cout << "File saved **************************" << std::endl;
+#endif  
                                 q.pop();
                             }
+                        } else {
+                            qMaster_.reqErrorsQ()->add(spHTTPResp->getLinkedHTTPRequest());
+                            q.pop();
                         }
-
-
-
-
                     }
                 } // end else { // reading successful
 

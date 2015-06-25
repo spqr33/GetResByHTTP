@@ -34,6 +34,7 @@ namespace LobKo {
         void add(int socketFD, shared_ptr<HTTPResponse>);
         void process();
         inline unsigned int getSystemRCVBUF_Size(int socketFd) const;
+        inline int getQueueSize() const;
     private:
         RecvBySocketQueue(const RecvBySocketQueue& orig);
         int readFromSocket(int socketFD, const char* buff, int buffSize);
@@ -60,5 +61,8 @@ unsigned int LobKo::RecvBySocketQueue::getSystemRCVBUF_Size(int socketFd) const 
     return size;
 };
 
+int LobKo::RecvBySocketQueue::getQueueSize() const {
+    return map_.size();
+};
 #endif	/* RECVBYSOCKETQUEUE_H */
 

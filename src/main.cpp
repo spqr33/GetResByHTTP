@@ -88,7 +88,7 @@ int main(int argc, char** argv) {
     shared_ptr<TaskHolder> spTaskHolder = TaskHolderBuilder::build();
     //QueuesMaster qmaster(request);
     QueuesMaster qmaster(spTaskHolder);
-    qmaster.process();
+    qmaster.process(10);
 
 
 

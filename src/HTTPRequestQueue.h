@@ -26,6 +26,7 @@ namespace LobKo {
 
         void add(shared_ptr<HTTPRequest> sp);
         void process(int requestsNumber = 1);
+        inline int getQueueSize() const;
     private:
         /**
          * It is necessary to clean up if error 
@@ -40,6 +41,10 @@ namespace LobKo {
         QueuesMaster& qMaster_;
         IPPortToSocketMap ipport_socket_map_;
     };
+};
+
+int LobKo::HTTPRequestQueue::getQueueSize() const{
+    return queue_.size();
 }
 #endif	/* HTTPREQUESTQUEUE_H */
 

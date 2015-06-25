@@ -29,11 +29,10 @@ namespace LobKo {
         QueuesMaster(shared_ptr<HTTPRequest> initialisationHTTPRequest);
         QueuesMaster(shared_ptr<TaskHolder> spTaskHolder);
         ~QueuesMaster();
-        
+
         void loadTasks(shared_ptr<TaskHolder> sp);
 
-        void process();
-
+        void process(int simultaneous_resources_recvng = 3);
         inline shared_ptr<HTTPRequestQueue> requestQ();
         inline shared_ptr<HTTPRequestErrorsQueue> reqErrorsQ();
         inline shared_ptr<OpenedSocketHolder> openSocketSet();
