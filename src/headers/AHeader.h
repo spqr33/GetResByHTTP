@@ -10,7 +10,6 @@
 
 #include <string>
 #include <memory>
-#include "AllHeaders.h"
 using std::string;
 using std::shared_ptr;
 

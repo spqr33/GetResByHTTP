@@ -11,7 +11,6 @@
 #include <list>
 #include <memory>
 #include "AHeader.h"
-#include "AllHeaders.h"
 
 using std::list;
 using std::shared_ptr;
