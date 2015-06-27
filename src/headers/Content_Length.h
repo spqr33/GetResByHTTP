@@ -26,7 +26,7 @@ namespace LobKo {
         static const string& name();
     private:
     };
-}
+};
 
 #endif	/* CONTENT_LENGTH_H */
 

@@ -38,7 +38,6 @@ namespace LobKo {
         const int maxSize_;
     };
 
-
     std::ostream& operator<<(std::ostream& out, HTTPRequestErrorsQueue& q);
 };
 #endif	/* HTTPREQUESTERRORSQUEUE_H */

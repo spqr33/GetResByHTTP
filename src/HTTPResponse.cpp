@@ -233,7 +233,6 @@ LobKo::HTTPResponse::parseStatus LobKo::HTTPResponse::parseResponseLine() {
                 assert("switch (parse_response_line_state) . Unknown state");
                 //break;
         }; //switch (parse_response_line_state) 
-
         //!!!!!!!!!!!!!!!!!
         ++cur_pos;
         //!!!!!!!!!!!!!!!!!
@@ -350,16 +349,12 @@ LobKo::HTTPResponse::parseStatus LobKo::HTTPResponse::parseHeaderLine() {
                     parse_headers_state = state_parse_headers_first_header_colon_whitespace;
                 } else if ( ch == LF ) {
                     parse_headers_state = state_parse_headers_first_header_colon_LF;
-
-                    //p_current_header_value_start_ = cur_pos;
                     curr_header_value = "";
 
                     ++cur_pos;
                     return PARSE_SUCCESS;
                 } else if ( ch == CR ) {
                     parse_headers_state = state_parse_headers_first_header_colon_CR;
-
-                    //p_current_header_value_start_ = cur_pos;
                     curr_header_value = "";
                 } else {
                     return PARSE_HEADER_ERROR;
@@ -430,11 +425,9 @@ LobKo::HTTPResponse::parseStatus LobKo::HTTPResponse::parseHeaderLine() {
             case state_parse_headers_first_header_colon_whitespace_symb_LF:
             case state_parse_headers_first_header_colon_whitespace_symb_CR_LF:
                 //header line was parsed
-                //                parse_state = state_parse_;
                 parse_headers_state = state_parse_headers_first_header_colon_whitespace_symb_finished;
 
                 assert(p_current_header_name_start_ && p_current_header_value_start_);
-                //p_proto_start_pos_ = p_response_code_digit_ = p_reason_phrase_ = NULL;
 
                 return PARSE_SUCCESS;
                 break;
@@ -442,8 +435,6 @@ LobKo::HTTPResponse::parseStatus LobKo::HTTPResponse::parseHeaderLine() {
                 assert("switch (parse_response_line_state) . Unknown state");
                 break;
         };
-
-
         //!!!!!!!!!!!!!!!!!
         ++cur_pos;
         //!!!!!!!!!!!!!!!!!
@@ -469,18 +460,14 @@ LobKo::HTTPResponse::parseStatus LobKo::HTTPResponse::parseHeaderLine() {
 
 void LobKo::HTTPResponse::assignKnownHeader(const string& name, const string& value) {
     string low_case_name = name;
-    shared_ptr<AHeader> spHeader;
-
     low_case_name.resize(name.size());
 
     std::transform(name.begin(), name.end(), low_case_name.begin(), ::tolower);
     if ( low_case_name == "content-length" ) {
-        //AHeader* pAheader;// = 
         shared_ptr<Content_Length> spHeader(new Content_Length(name, value));
 
         spContent_Length = spHeader;
     } else {
         unsupported_headers_[name] = value;
     }
-
 }

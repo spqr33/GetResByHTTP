@@ -7,6 +7,7 @@
 
 #ifndef HTTPRESPONSE_H
 #define	HTTPRESPONSE_H
+
 #include <memory>
 #include "HTTPRequest.h"
 #include "JumboBuff.h"
@@ -109,7 +110,6 @@ namespace LobKo {
 
         shared_ptr<HTTPRequest> spHTTPRequest_;
         shared_ptr<JumboBuff> spJumboBuff_;
-        //shared_ptr<HeadersHolder> headerHolder_;
         std::map<string, string> unsupported_headers_;
 
         std::string proto_;

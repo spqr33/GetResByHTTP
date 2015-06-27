@@ -7,6 +7,7 @@
 
 #ifndef ACTION_H
 #define	ACTION_H
+
 #include <cstdint>
 
 namespace LobKo {
@@ -23,7 +24,6 @@ namespace LobKo {
         virtual result takeData(const char* const startBuf, const char* const endBuf, std::uint64_t totaDataSize) = 0;
     private:
         Action(const Action& orig);
-
     };
 };
 #endif	/* ACTION_H */

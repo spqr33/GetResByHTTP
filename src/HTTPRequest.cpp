@@ -16,16 +16,12 @@ requestType_(reqType),
 requestProto_(reqProto),
 spURL_(spURL),
 isResultStringActual_(false),
-headerHolder_(new HeadersHolder()),
-lastUsedIP_NetOrder_(0),
-bytesSent_(0){
+headerHolder_(new HeadersHolder())
+//,lastUsedIP_NetOrder_(0)
+//,bytesSent_(0)
+{
     if ( requestProto_.getRequestProto() == HTTPProto::getRequestProtoByType(HTTPProto::Type::HTTP1_1) ) {
-        char i = 1;
-        //AHeader* pAHeader = new HostHeader(HostHeader::name(), spURL_->getHost());
-        shared_ptr<AHeader> sp;
-        sp = AHeader::makeHeader(HostHeader::name(), spURL_->getHost());
-
-        //headerHolder_->add(shared_ptr<AHeader>(pAHeader));
+        shared_ptr<AHeader> sp = AHeader::makeHeader(HostHeader::name(), spURL_->getHost());
         headerHolder_->add(sp);
     }
 }
@@ -63,8 +59,6 @@ void LobKo::HTTPRequest::addHeader(shared_ptr<AHeader> sp) {
     headerHolder_->add(sp);
     isResultStringActual_ = false;
 }
-
-
 
 
 /////////////////

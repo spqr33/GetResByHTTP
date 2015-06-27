@@ -32,11 +32,8 @@ namespace LobKo {
         QueuesMaster& qMaster_;
         int writeToSocket(int socketFD, const char* begin, size_t n) const;
 
-        //std::queue<int> socketQueue_;
         std::map<int, std::queue<shared_ptr<HTTPRequest> > > map_;
-
     };
-
 };
 
 int LobKo::SendBySocketQueue::getQueueSize() const {

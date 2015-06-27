@@ -9,14 +9,11 @@
 #define	HTTPREQUEST_H
 
 #include <string>
-#include <stdexcept>
 #include <memory>
 #include "URL.h"
 #include "headers/HeadersHolder.h"
 #include "HTTPResponse.h"
-#include "headers/Content_Length.h"
 #include "Action.h"
-
 
 using std::shared_ptr;
 using std::weak_ptr;
@@ -30,7 +27,7 @@ namespace LobKo {
         enum Type {
             GET
         };
-        HTTPRequestType(HTTPRequestType::Type); //throw std::invalid_argument
+        explicit HTTPRequestType(HTTPRequestType::Type); //throw std::invalid_argument
         ~HTTPRequestType();
         const std::string& getRequestType() const;
     private:
@@ -43,11 +40,10 @@ namespace LobKo {
         enum Type {
             HTTP0_9, HTTP1_0, HTTP1_1
         };
-        HTTPProto(HTTPProto::Type); //throw std::invalid_argument
+        explicit HTTPProto(HTTPProto::Type); //throw std::invalid_argument
         ~HTTPProto();
         const std::string& getRequestProto() const;
         static const std::string& getRequestProtoByType(HTTPProto::Type);
-        //bool operator==()
     private:
         std::string protoType_;
     };
@@ -55,7 +51,6 @@ namespace LobKo {
     class HTTPRequest {
     public:
         HTTPRequest(const HTTPRequestType& reqType, shared_ptr<URL> spURL, const HTTPProto& reqProto);
-        //HTTPRequest(const HTTPRequest& orig);
         ~HTTPRequest();
 
         void addHeader(shared_ptr<AHeader>);
@@ -76,7 +71,7 @@ namespace LobKo {
         HTTPProto requestProto_;
         shared_ptr<URL> spURL_;
         shared_ptr<HeadersHolder> headerHolder_;
-        //shared_ptr<Content_Length> spContentLength_;
+
         shared_ptr<Action> spAction_;
 
         mutable string resultString_;
@@ -87,7 +82,7 @@ namespace LobKo {
 
         std::weak_ptr<HTTPResponse> wpHTTPResponse_;
     };
-}
+};
 
 in_addr_t LobKo::HTTPRequest::getLastUsedIp() const {
     return lastUsedIP_NetOrder_;

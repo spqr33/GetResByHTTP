@@ -30,7 +30,7 @@ namespace LobKo {
         mutable bool isResultActual_;
         mutable string result_;
     };
-}
+};
 
 #endif	/* HEADERHOLDER_H */
 

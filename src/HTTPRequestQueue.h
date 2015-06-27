@@ -8,11 +8,11 @@
 #ifndef HTTPREQUESTQUEUE_H
 #define	HTTPREQUESTQUEUE_H
 
-#define HTTPREQUESTQUEUE_H_DEBUG
+//#define HTTPREQUESTQUEUE_H_DEBUG
 
 #include "HTTPRequest.h"
 #include "QueuesMaster.h"
-#include "IPPortToSocketMap.h"
+#include "utils.h"
 #include  <memory>
 #include  <queue>
 
@@ -39,11 +39,11 @@ namespace LobKo {
 
         std::queue<shared_ptr<HTTPRequest> > queue_;
         QueuesMaster& qMaster_;
-        IPPortToSocketMap ipport_socket_map_;
+        DomainNameResolver resolver_;
     };
 };
 
-int LobKo::HTTPRequestQueue::getQueueSize() const{
+int LobKo::HTTPRequestQueue::getQueueSize() const {
     return queue_.size();
 }
 #endif	/* HTTPREQUESTQUEUE_H */
