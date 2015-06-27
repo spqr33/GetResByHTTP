@@ -12,20 +12,18 @@
 
 LobKo::QueuesMaster::QueuesMaster(shared_ptr<HTTPRequest> initialisationHTTPRequest) :
 reqQueue_(new HTTPRequestQueue(this)),
-errQueue_(new HTTPRequestErrorsQueue),
-openSockSet_(new OpenedSocketHolder),
-sendQueue_(new SendBySocketQueue(this)),
+errQueue_(new HTTPRequestErrorsQueue)
+//,openSockSet_(new OpenedSocketHolder)
+,sendQueue_(new SendBySocketQueue(this)),
 recvQueue_(new RecvBySocketQueue(this)),
 initialisationHTTPRequest_(initialisationHTTPRequest) {
     reqQueue_->add(initialisationHTTPRequest_);
-
-    ;
 }
 
 LobKo::QueuesMaster::QueuesMaster(shared_ptr<TaskHolder> spTaskHolder) : reqQueue_(new HTTPRequestQueue(this)),
-errQueue_(new HTTPRequestErrorsQueue),
-openSockSet_(new OpenedSocketHolder),
-sendQueue_(new SendBySocketQueue(this)),
+errQueue_(new HTTPRequestErrorsQueue)
+//,openSockSet_(new OpenedSocketHolder)
+,sendQueue_(new SendBySocketQueue(this)),
 recvQueue_(new RecvBySocketQueue(this)) {
     loadTasks(spTaskHolder);
 }

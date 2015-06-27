@@ -9,7 +9,7 @@
 #define	QUEUESMASTER_H
 #include "HTTPRequestQueue.h"
 #include "HTTPRequestErrorsQueue.h"
-#include "OpenedSocketHolder.h"
+//#include "OpenedSocketHolder.h"
 #include "SendBySocketQueue.h"
 #include "RecvBysocketQueue.h"
 #include "HTTPRequest.h"
@@ -44,7 +44,7 @@ namespace LobKo {
 
         shared_ptr<HTTPRequestQueue> reqQueue_;
         shared_ptr<HTTPRequestErrorsQueue> errQueue_;
-        shared_ptr<OpenedSocketHolder> openSockSet_;
+        //shared_ptr<OpenedSocketHolder> openSockSet_;
         shared_ptr<SendBySocketQueue> sendQueue_;
         shared_ptr<RecvBySocketQueue> recvQueue_;
 
@@ -61,9 +61,9 @@ shared_ptr<LobKo::HTTPRequestErrorsQueue> LobKo::QueuesMaster::reqErrorsQ() {
     return errQueue_;
 }
 
-shared_ptr<LobKo::OpenedSocketHolder> LobKo::QueuesMaster::openSocketSet() {
-    return openSockSet_;
-}
+//shared_ptr<LobKo::OpenedSocketHolder> LobKo::QueuesMaster::openSocketSet() {
+//    return openSockSet_;
+//}
 
 shared_ptr<LobKo::SendBySocketQueue> LobKo::QueuesMaster::sendQ() {
     return sendQueue_;

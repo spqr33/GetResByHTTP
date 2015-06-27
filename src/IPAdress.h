@@ -7,6 +7,7 @@
 
 #ifndef IPADRESS_H
 #define	IPADRESS_H
+
 #include <list>
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -24,7 +25,7 @@ namespace LobKo {
         void addMultiple(struct in_addr**);
         in_addr_t getIP() const;
     private:
-        std::list<struct in_addr> lAddr_;
+        std::list<struct in_addr> list_in_addr_;
     };
 
     std::ostream& operator<<(std::ostream&, const IPAdress&);

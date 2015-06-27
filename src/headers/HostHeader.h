@@ -26,7 +26,7 @@ namespace LobKo {
     private:
 
     };
-}
+};
 
 #endif	/* HOSTHEADER_H */
 
