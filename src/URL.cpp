@@ -9,7 +9,8 @@
 #include <stdexcept>
 // throw std::invalid_argument( "received incorrect value" );
 
-LobKo::URL::URL(const string& original_string) {
+LobKo::URL::URL(const string& original_string) :
+original_request_string_(original_string) {
     const char* p1;
     const char* p2;
 

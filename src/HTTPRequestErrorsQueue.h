@@ -12,10 +12,12 @@
 #include "HTTPRequest.h"
 #include <list>
 
+
 namespace LobKo {
 
     class HTTPRequestErrorsQueue {
     public:
+        friend std::ostream& operator<<(std::ostream& out, HTTPRequestErrorsQueue& q);
 
         enum {
             HOLDER_MAX_SIZE = 1000
@@ -24,17 +26,20 @@ namespace LobKo {
         virtual ~HTTPRequestErrorsQueue();
 
         void add(shared_ptr<HTTPRequest> sp);
-        std::queue<shared_ptr<HTTPRequest> >& getQueue();
+        std::list<shared_ptr<HTTPRequest> >& getContainer();
 
         uint32_t size() const {
-            return queue_.size();
+            return list_.size();
         }
     private:
         HTTPRequestErrorsQueue(const HTTPRequestErrorsQueue& orig);
 
-        std::queue<shared_ptr<HTTPRequest> > queue_;
+        std::list<shared_ptr<HTTPRequest> > list_;
         const int maxSize_;
     };
-}
+
+
+    std::ostream& operator<<(std::ostream& out, HTTPRequestErrorsQueue& q);
+};
 #endif	/* HTTPREQUESTERRORSQUEUE_H */
 

@@ -40,28 +40,30 @@ LobKo::QueuesMaster::~QueuesMaster() {
 }
 
 void LobKo::QueuesMaster::loadTasks(shared_ptr<TaskHolder> spTaskHolder) {
-    vector<Task>::iterator iterVec = spTaskHolder->getTasks().begin();
-    vector<Task>::iterator iterVecEnd = spTaskHolder->getTasks().end();
+    if ( spTaskHolder.get() != NULL ) {
+        vector<Task>::iterator iterVec = spTaskHolder->getTasks().begin();
+        vector<Task>::iterator iterVecEnd = spTaskHolder->getTasks().end();
 
-    //shared_ptr<HTTPRequest> spHTTPRequest;
+        //shared_ptr<HTTPRequest> spHTTPRequest;
 
-    for (; iterVec != iterVecEnd; ++iterVec ) {
-        try {
-            shared_ptr<URL> spURL(new URL(iterVec->remoteResource()));
-            HTTPRequestType type(LobKo::HTTPRequestType::Type::GET);
-            HTTPProto proto(LobKo::HTTPProto::Type::HTTP1_1);
+        for (; iterVec != iterVecEnd; ++iterVec ) {
+            try {
+                shared_ptr<URL> spURL(new URL(iterVec->remoteResource()));
+                HTTPRequestType type(LobKo::HTTPRequestType::Type::GET);
+                HTTPProto proto(LobKo::HTTPProto::Type::HTTP1_1);
 
-            shared_ptr<HTTPRequest> spHTTPRequest(new HTTPRequest(type, spURL, proto));
+                shared_ptr<HTTPRequest> spHTTPRequest(new HTTPRequest(type, spURL, proto));
 
-            shared_ptr<Action> spAction(new SaveFile(iterVec->localFileName()));
-            spHTTPRequest->setAction(spAction);
+                shared_ptr<Action> spAction(new SaveFile(iterVec->localFileName()));
+                spHTTPRequest->setAction(spAction);
 
-            reqQueue_->add(spHTTPRequest);
+                reqQueue_->add(spHTTPRequest);
 
-        } catch (const std::invalid_argument& ia) {
-            iterVec->setTaskResult(LobKo::Task::taskResult::TASK_ERROR);
-        } catch (const std::runtime_error& re) {
-            iterVec->setTaskResult(LobKo::Task::taskResult::TASK_ERROR);
+            } catch (const std::invalid_argument& ia) {
+                iterVec->setTaskResult(LobKo::Task::taskResult::TASK_ERROR);
+            } catch (const std::runtime_error& re) {
+                iterVec->setTaskResult(LobKo::Task::taskResult::TASK_ERROR);
+            }
         }
     }
 }

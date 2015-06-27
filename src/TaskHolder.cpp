@@ -6,6 +6,8 @@
  */
 
 #include "TaskHolder.h"
+#include <sstream>
+#include <iostream>
 
 LobKo::TaskHolder::TaskHolder() {
     tasksVec_.reserve(16);
@@ -41,8 +43,39 @@ shared_ptr<LobKo::TaskHolder> LobKo::TaskHolderBuilder::build() {
     spBuildThis->addTask(Task("http://tn.new.fishki.net/2/upload/avatar/433219.jpg", "fishki.net.433219.jpg"));
     spBuildThis->addTask(Task("http://tn.new.fishki.net/2/upload/avatar/____63208.jpg", "fishki.net.63208.jpg")); //!!!!
     spBuildThis->addTask(Task("http://www.boost.org/gfx/space.png", "boost.org.space.png"));
-    
+
     //spBuildThis->addTask(Task("http://www.boost.org", "boost.org.html"));
+
+    return spBuildThis;
+}
+
+shared_ptr<LobKo::TaskHolder> LobKo::TaskHolderBuilder::build(ifstream& file_in) {
+    shared_ptr<TaskHolder> spBuildThis(new TaskHolder);
+
+    std::string str;
+
+    file_in.clear();
+    bool flag = true;
+    do {
+        std::getline(file_in, str);
+        if ( file_in.bad() || file_in.fail() ) {
+            break;
+        } else if ( file_in.eof() ) {
+            flag == false;
+        }
+        std::istringstream istream(str);
+
+        string res;
+        string filepath;
+
+        istream >> res >> filepath;
+        if ( res.size() && res[0] != '#' ) {
+            if ( filepath.size() ) {
+                spBuildThis->addTask(Task(res, filepath));
+            }
+        }
+    } while (flag);
+
 
     return spBuildThis;
 }

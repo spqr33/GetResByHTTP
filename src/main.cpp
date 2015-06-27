@@ -18,6 +18,8 @@
 #include "HTTPRequest.h"
 #include "QueuesMaster.h"
 #include "TaskHolder.h"
+#include <fstream>
+#include "HTTPRequestErrorsQueue.h"
 
 using namespace std;
 using namespace LobKo;
@@ -46,7 +48,7 @@ int main(int argc, char** argv) {
     //    string s2("http://");
     //    string s3("http://ab");
     //    string s4("http://ab/");
-    //    string s5("http://ab:81");
+    //string s5("http://ab:81");
     //    string s6("http://ab:81/");
     //    string s7("http://u@ab:81/");
     //    //    string s8("http://_@ab:11108/");
@@ -54,7 +56,8 @@ int main(int argc, char** argv) {
     //    string s9("hxttp://_1@ab:23408/sdsd");
     //    string s10("http://_1:ya.ru@ya.ru:23408/ss");
     //string s11("hxttp://_1:ya.ru@ebay.com:2a3408/ss");
-    //    URL url5(s5);
+    //URL url5_3(s5);
+    //URL& url5 = url5_3;
     //    URL url6(s6);
     //    URL url7(s7);
     //    URL url8(s8);
@@ -62,7 +65,7 @@ int main(int argc, char** argv) {
 
     //    //URL url11(s11);
     //
-    //    cerr << url5 << endl;
+    //cerr << url5 << endl;
     //    cerr << url6 << endl;
     //    cerr << url7 << endl;
     //    cerr << url8 << endl;
@@ -85,22 +88,26 @@ int main(int argc, char** argv) {
     //
     //    std::cout << "Request String:" << std::endl << request->getResultString() << std::endl;
     ////////////////////////////////////
-    shared_ptr<TaskHolder> spTaskHolder = TaskHolderBuilder::build();
+    if ( argc < 2 ) {
+        std::cerr << " Usage:\t\t " << argv[0] << " /path/to/taskFile" << std::endl;
+        return EXIT_FAILURE;
+    }
+
+    std::ifstream dataFile(argv[1]);
+    shared_ptr<TaskHolder> spTaskHolder;
+    if ( !dataFile.is_open() ) {
+        std::cerr << "File " << argv[1] << " can't be opened" << std::endl;
+        return EXIT_FAILURE;
+    }
+
+    spTaskHolder = TaskHolderBuilder::build(dataFile);
+    //shared_ptr<TaskHolder> spTaskHolder; // = TaskHolderBuilder::build();
     //QueuesMaster qmaster(request);
     QueuesMaster qmaster(spTaskHolder);
-    qmaster.process(10);
+    qmaster.process(5);
 
-
-
-//    char c = '7';
-//    std::string s = "aa";
-//    const char * pc1;
-//    const char* pc2 = &c;
-//    pc1 = pc2;
-//    s.append(pc1, pc2-pc1+1);
-//    std::cout << s << ":" << endl;
-
-
+    HTTPRequestErrorsQueue& eq = *(qmaster.reqErrorsQ().get());
+    cerr << eq << std::endl;
     std::cout << "main exit" << endl;
     return 0;
 }

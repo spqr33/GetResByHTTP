@@ -33,10 +33,11 @@ namespace LobKo {
         };
         URL(const string& original_string); //throw std::invalid_argument
         ~URL();
-        
+
         const string& getHost() const;
         const string& getPath() const;
         const uint16_t& getPort() const;
+        inline const string& originalRequestString() const;
         //void fill();
         //URL(const URL& orig);
     private:
@@ -46,6 +47,7 @@ namespace LobKo {
         string host_;
         uint16_t port_; //network order!
         string path_;
+        string original_request_string_;
 
         class QuerySring {
         public:
@@ -109,8 +111,8 @@ namespace LobKo {
         if (c >= '0' && c <= '9') {
             return true;
         }
-         
-        return false; 
+
+        return false;
     }
 
     uint16_t LobKo::URL::netOrderPortFromString(const char* first, const char* last) const {
@@ -126,6 +128,10 @@ namespace LobKo {
             return 0;
         }
         return htons((uint16_t) port);
+    }
+
+    const string& LobKo::URL::originalRequestString() const {
+        return original_request_string_;
     }
 };
 #endif	/* URL_H */
