@@ -11,41 +11,24 @@
 #include <vector>
 #include <unistd.h> //close()
 #include "Action.h"
-
-//#include <algorithm>
+#include "SaveFile.h"
 
 LobKo::RecvBySocketQueue::RecvBySocketQueue(QueuesMaster* qMaster) : qMaster_(*qMaster) {
     assert(qMaster && "SendBySocketQueue(): QueuesMaster is zero");
-
 }
-//RecvBysocketQueue::RecvBysocketQueue(const RecvBysocketQueue& orig) {
-//}
 
 LobKo::RecvBySocketQueue::~RecvBySocketQueue() {
+    ;
 }
 
 void LobKo::RecvBySocketQueue::add(int socketFD, shared_ptr<HTTPResponse> HTTPResponse) {
-#ifdef SENDBYSOCKETQUEUE_H_DEBUG
-    std::cout << "In add() function of LobKo::RecvBySocketQueue" << std::endl;
-#endif
-
     map_[socketFD].push(HTTPResponse);
-
-#ifdef SENDBYSOCKETQUEUE_H_DEBUG
-    std::cout << "In add() function of LobKo::RecvBySocketQueue End" << std::endl;
-#endif
 };
 
 void LobKo::RecvBySocketQueue::process() {
-#ifdef RECVBYSOCKETQUEUE_H_DEBUG
-    std::cout << "RecvBySocketQueue size:" << map_.size() << std::endl;
-#endif
     if ( map_.empty() ) {
         return;
     } else {
-        //std::cerr << "void LobKo::RecvBySocketQueue::process()" << std::endl;
-
-        using std::vector;
         typedef map<int, queue<shared_ptr<HTTPResponse> > >::iterator MapIterator;
         MapIterator iterMap = map_.begin();
         MapIterator iterMapEnd = map_.end();
@@ -70,17 +53,21 @@ void LobKo::RecvBySocketQueue::process() {
                 int readBytesfromSock;
                 const char* const buff = spHTTPResp->getJumboBuff()->watermark_;
 
-                int canBytesRead = spHTTPResp->getJumboBuff()->start_ + spHTTPResp->getJumboBuff()->buffSize_ - buff;
-                if ( canBytesRead == 0 ) {
+                int canReadBytes = spHTTPResp->getJumboBuff()->start_ + spHTTPResp->getJumboBuff()->buffSize_ - buff;
+                if ( canReadBytes == 0 ) {
                     //Buffer is full. It is necessary to process it or reinit. **
                 };
 
-                readBytesfromSock = this->readFromSocket(socketFD, buff, canBytesRead);
+                readBytesfromSock = this->readFromSocket(socketFD, buff, canReadBytes);
 
                 if ( readBytesfromSock < 0 ) {
-                    //Reading error from sock occurs. ***
+#ifndef NDEBUG
+                    std::cerr << "Reading error from socket occured. ***" << std::endl;
+#endif
                 } else if ( readBytesfromSock == 0 ) {
-                    // Connection was closed by remote side. **** 
+#ifndef NDEBUG
+                    std::cerr << "Connection was closed by remote side. ****" << std::endl;
+#endif
                 } else { // reading successful
                     spHTTPResp->getJumboBuff()->watermark_ += readBytesfromSock;
                     //chose state
@@ -93,10 +80,10 @@ void LobKo::RecvBySocketQueue::process() {
                         //PARSE_NOT_CORRESPOND_STATE, PARSE_HEADER_ERROR, PARSE_ALL_HEADERS_SUCCESS
 
                         if ( status == HTTPResponse::PARSE_SUCCESS ) {
-#ifdef RECVBYSOCKETQUEUE_H_DEBUG
-                            std::cout << "Proto:" << spHTTPResp->get_proto() << ":"
-                                    << "Status Code:" << spHTTPResp->get_status_code() << ":"
-                                    << "Reason Phrase:" << spHTTPResp->get_reason_phrase() << ":"
+#ifndef NDEBUG
+                            std::cout << spHTTPResp->get_proto() << " "
+                                    << spHTTPResp->get_status_code() << " "
+                                    << spHTTPResp->get_reason_phrase()
                                     << std::endl;
 #endif
                         } else if ( status == HTTPResponse::PARSE_WATERMARK_REACHED ) {
@@ -110,12 +97,12 @@ void LobKo::RecvBySocketQueue::process() {
                                 status == HTTPResponse::PARSE_REASON_STR_ERROR ||
                                 status == HTTPResponse::PARSE_NOT_CORRESPOND_STATE ) {
                             // error while parsing occured  *
-#ifdef RECVBYSOCKETQUEUE_H_DEBUG
-                            std::cout << "Error while parsing occured" << std::endl;
+#ifndef NDEBUG
+                            std::cout << "Error while response line parsing occured" << std::endl;
 
+#endif                          
                             qMaster_.reqErrorsQ()->add(spHTTPResp->getLinkedHTTPRequest());
                             q.pop();
-#endif                          
                         }
                     } // end if ( spHTTPResp->get_parse_state() == HTTPResponse::parse_states::state_response_line ) {
                     if ( spHTTPResp->get_parse_state() == HTTPResponse::state_response_line_finished ||
@@ -131,9 +118,9 @@ void LobKo::RecvBySocketQueue::process() {
                                 break;
                             } else if ( status == HTTPResponse::PARSE_SUCCESS ) {
                                 spHTTPResp->assignKnownHeader(spHTTPResp->get_curr_name(), spHTTPResp->get_curr_value());
-#ifdef RECVBYSOCKETQUEUE_H_DEBUG
-                                std::cout << "" << spHTTPResp->get_curr_name() << ":"
-                                        << "" << spHTTPResp->get_curr_value() << "" << std::endl;
+#ifndef NDEBUG
+                                //std::cout << spHTTPResp->get_curr_name() << ":"
+                                //<< " " << spHTTPResp->get_curr_value() << std::endl;
 #endif
                             } else if ( status == HTTPResponse::PARSE_WATERMARK_REACHED ) {
                                 parseHeadersExit_Flag = false;
@@ -142,14 +129,13 @@ void LobKo::RecvBySocketQueue::process() {
                                 parseHeadersExit_Flag = false;
                             } else if ( status == HTTPResponse::PARSE_HEADER_ERROR ) {
                                 // error while parsing occured  *
-#ifdef RECVBYSOCKETQUEUE_H_DEBUG
-                                // error while parsing occured  *
                                 parseHeadersExit_Flag = false;
-                                std::cout << "Error while header parsing occured" << std::endl;
-
+#ifndef NDEBUG
+                                // error while parsing occured  *
+                                std::cout << "Error while header parsing occurred" << std::endl;
+#endif     
                                 qMaster_.reqErrorsQ()->add(spHTTPResp->getLinkedHTTPRequest());
                                 q.pop();
-#endif     
                             }
                         }
                         /////////////////!!!
@@ -160,9 +146,8 @@ void LobKo::RecvBySocketQueue::process() {
                         /////////////////!!!
                     }
                     if ( spHTTPResp->get_parse_state() == HTTPResponse::state_headers_finished ) {
-                        //dont forget about codes 1xx
-#ifdef RECVBYSOCKETQUEUE_H_DEBUG
-                        // error while parsing occured  *
+                        //todo dont forget about codes 1xx
+#ifndef NDEBUG
                         std::cout << "Headers parsing finished" << std::endl;
 #endif                         
                         if ( spHTTPResp->get_status_code() == "200" && spHTTPResp->spContent_Length.use_count() != 0 ) {
@@ -174,23 +159,25 @@ void LobKo::RecvBySocketQueue::process() {
                                     spHTTPResp->spContent_Length->getValueAsDecimalNumber());
 
                             if ( action_res == Action::result::ERROR_OCCURED ) {
+#ifndef NDEBUG
                                 // error while saving occured  *
-#ifdef RECVBYSOCKETQUEUE_H_DEBUG
-                                std::cout << "Error while saving occured  **************************" << std::endl;
+                                std::cout << "Error while saving occurred" << std::endl;
 #endif  
                                 //error while writing results
                                 qMaster_.reqErrorsQ()->add(spHTTPResp->getLinkedHTTPRequest());
                                 q.pop();
                             } else if ( action_res == Action::result::NOT_ALL_DATA_RCVD ) {
-#ifdef RECVBYSOCKETQUEUE_H_DEBUG
-                                std::cout << "Saving file  **************************" << std::endl;
+#ifndef NDEBUG
+                                std::cout << "Saving file" << std::endl;
 #endif  
-                                //spHTTPResp->getJumboBuff()->currentPos_ = spHTTPResp->getJumboBuff()->start_;
                                 spHTTPResp->getJumboBuff()->reInit();
                             } else if ( action_res == Action::result::ALL_DATA_RCVD ) {
-#ifdef RECVBYSOCKETQUEUE_H_DEBUG
-                                std::cout << "File saved **************************" << std::endl;
-#endif  
+                                SaveFile *save_file_act = dynamic_cast<LobKo::SaveFile*> (spAction.get());
+                                if ( save_file_act != NULL ) {
+                                    std::cout << "File "
+                                            << save_file_act->get_file_name()
+                                            << " saved" << std::endl;
+                                }
                                 q.pop();
                             }
                         } else {
@@ -200,9 +187,6 @@ void LobKo::RecvBySocketQueue::process() {
                     }
                 } // end else { // reading successful
 
-
-                //if Response fully processed
-                //q.pop();
                 if ( q.empty() ) {
                     vecEraseItersAtEnd.push_back(iterMap);
                 }
@@ -210,22 +194,20 @@ void LobKo::RecvBySocketQueue::process() {
         }; // end  for (; iterMap != iterMapEnd; ++iterMap )
 
         for ( vector<MapIterator>::iterator i = vecEraseItersAtEnd.begin(); i != vecEraseItersAtEnd.end(); ++i ) {
-
             close((*i)->first);
             map_.erase(*i);
         };
         //std::for_each(vecEraseItersAtEnd.begin(), vecEraseItersAtEnd.end()), map_.erase());
     }
 }
-//}
 
 int LobKo::RecvBySocketQueue::readFromSocket(int socketFD, const char* buff, int buffSize) {
-    assert((buff != NULL) && " SendBySocketQueue::write, Zero pointer\n ");
-    ssize_t readBytes = 0;
+    assert((buff != NULL) && " RecvBySocketQueue::readFromSocket, Zero pointer\n ");
+    assert((socketFD > 0) && " RecvBySocketQueue::readFromSocket, socketFD < 0\n ");
 
-    std::cerr << "Read before" << std::endl;
+    ssize_t readBytes;
+
     readBytes = read(socketFD, const_cast<char*> (buff), buffSize);
-    std::cerr << "Read after" << std::endl;
 
     return readBytes;
 }

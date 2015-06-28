@@ -13,9 +13,7 @@ localFileName_(localFileName),
 result_(TASK_DUMMY) {
 }
 
-//Task::Task(const Task& orig) {
-//}
-
 LobKo::Task::~Task() {
+    ;
 }
 

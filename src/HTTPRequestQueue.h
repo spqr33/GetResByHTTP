@@ -8,8 +8,6 @@
 #ifndef HTTPREQUESTQUEUE_H
 #define	HTTPREQUESTQUEUE_H
 
-//#define HTTPREQUESTQUEUE_H_DEBUG
-
 #include "HTTPRequest.h"
 #include "QueuesMaster.h"
 #include "utils.h"

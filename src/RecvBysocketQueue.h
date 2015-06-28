@@ -8,16 +8,10 @@
 #ifndef RECVBYSOCKETQUEUE_H
 #define	RECVBYSOCKETQUEUE_H
 
-#define RECVBYSOCKETQUEUE_H_DEBUG
-
-
 #include <memory>
 #include "HTTPRequest.h"
-#include "HTTPResponse.h"
 #include "QueuesMaster.h"
-#include <queue>
 #include <map>
-#include <sys/types.h>          /* See NOTES */
 #include <sys/socket.h>         //getsockopt
 
 using std::map;
@@ -41,14 +35,13 @@ namespace LobKo {
         QueuesMaster& qMaster_;
 
         map<int, queue<shared_ptr<HTTPResponse> > > map_;
-
     };
 };
 
 unsigned int LobKo::RecvBySocketQueue::getSystemRCVBUF_Size(int socketFd) const {
     static bool sizeAlreadyCalculated = false;
     static int size = 0;
-    static unsigned int defaultSize = 87380;
+    static const unsigned int defaultSize = 87380;
 
     if (!sizeAlreadyCalculated) {
         static socklen_t len = sizeof (size);

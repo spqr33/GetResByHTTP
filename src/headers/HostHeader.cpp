@@ -9,9 +9,11 @@
 
 LobKo::HostHeader::HostHeader(const string& name, const string& value) :
 AHeader(name, value) {
+    ;
 }
 
 LobKo::HostHeader::~HostHeader() {
+    ;
 }
 
 const  string& LobKo::HostHeader::name() {

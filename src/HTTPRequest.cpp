@@ -16,9 +16,9 @@ requestType_(reqType),
 requestProto_(reqProto),
 spURL_(spURL),
 isResultStringActual_(false),
-headerHolder_(new HeadersHolder())
-//,lastUsedIP_NetOrder_(0)
-//,bytesSent_(0)
+headerHolder_(new HeadersHolder()),
+lastUsedIP_NetOrder_(0),
+bytesSent_(0)
 {
     if ( requestProto_.getRequestProto() == HTTPProto::getRequestProtoByType(HTTPProto::Type::HTTP1_1) ) {
         shared_ptr<AHeader> sp = AHeader::makeHeader(HostHeader::name(), spURL_->getHost());
@@ -61,7 +61,7 @@ void LobKo::HTTPRequest::addHeader(shared_ptr<AHeader> sp) {
 }
 
 
-/////////////////
+/////////////////class HTTPRequestType
 
 LobKo::HTTPRequestType::HTTPRequestType(HTTPRequestType::Type type) {//throw std::invalid_argument
     switch (type) {
@@ -81,7 +81,7 @@ const std::string& LobKo::HTTPRequestType::getRequestType() const {
     return requestType_;
 }
 
-/////////////////
+/////////////////class HTTPProto
 
 LobKo::HTTPProto::HTTPProto(HTTPProto::Type type) { //throw std::invalid_argument
     switch (type) {

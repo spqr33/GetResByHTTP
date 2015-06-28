@@ -10,9 +10,6 @@
 LobKo::Action::Action() {
 }
 
-//Action::Action(const Action& orig) {
-//}
-
 LobKo::Action::~Action() {
 }
 

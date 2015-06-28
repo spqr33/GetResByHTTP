@@ -10,6 +10,7 @@
 
 #include "AHeader.h"
 #include <string>
+
 using std::string;
 
 namespace LobKo {

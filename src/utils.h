@@ -11,12 +11,9 @@
 #include <utility>
 #include <memory>
 #include <string>
-#include <netdb.h> // gethostbyname
 #include "IPAdress.h"
 
-//using std::shared_ptr;
 using std::string;
-
 
 namespace LobKo {
 

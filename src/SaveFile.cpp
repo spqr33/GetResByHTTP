@@ -11,7 +11,8 @@
 #include <iostream>
 
 LobKo::SaveFile::SaveFile(const std::string& saveTo_FileName) :
-alreadyBytesSaved(0) {
+alreadyBytesSaved(0),
+saveTo_FileName_(saveTo_FileName) {
     using std::ios_base;
     fout.open(saveTo_FileName, ios_base::out /*| ios_base::app */ | ios_base::binary);
 
@@ -34,10 +35,6 @@ LobKo::SaveFile::takeData(const char* const startBuf, const char* const endBuf, 
 
     totaDataSize -= alreadyBytesSaved;
 
-
-    std::cout << "-----delta: " << delta << "totaDataSize: " << totaDataSize << std::endl;
-    std::cout << "-----startBuf: " << std::hex << (void *) startBuf << "endBuf: " << (void *) endBuf << std::dec << std::endl;
-
     if ( delta < totaDataSize ) {
         fout.write(startBuf, delta);
         alreadyBytesSaved += delta;
@@ -56,7 +53,6 @@ LobKo::SaveFile::takeData(const char* const startBuf, const char* const endBuf, 
             fout.close();
             return Action::ERROR_OCCURED;
         } else {
-            //Action::ALL_DATA_RCVD;
             return Action::ALL_DATA_RCVD;
         }
     }

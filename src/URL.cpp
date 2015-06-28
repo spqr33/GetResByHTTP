@@ -7,7 +7,7 @@
 
 #include "URL.h"
 #include <stdexcept>
-// throw std::invalid_argument( "received incorrect value" );
+#include "utils.h"
 
 LobKo::URL::URL(const string& original_string) :
 original_request_string_(original_string) {
@@ -40,7 +40,6 @@ original_request_string_(original_string) {
     }
     schema_ = std::string(p1, p2 - p1);
 
-    //p1 = p2;
     ++p2;
     for ( int i = 0; i < 2; ++i ) {
         if ( *p2 != '/' || *p2 == '\0' ) {
@@ -48,14 +47,13 @@ original_request_string_(original_string) {
         }
         ++p2;
     }
-    //++p2;
+
     p1 = p2;
     const char* pColon = NULL;
     const char* pAt = NULL;
     const char* pColonTwice = NULL;
     states_hostname stateHostname = begin;
 
-    //++p2;
     for ( char ch; *p2 != '\0' && *p2 != '/'; ++p2 ) {
         ch = *p2;
 
@@ -182,7 +180,6 @@ original_request_string_(original_string) {
             break;
     }
     //Allowed states processing
-    //++p1;
     if ( stateHostname == allowedsym ) {
         host_ = std::string(p1, p2 - p1);
         port_ = htons(Default::PORT);
@@ -227,11 +224,8 @@ original_request_string_(original_string) {
     //string fragment_id;
 }
 
-//URL::URL(const URL& orig) {
-//}
-
 LobKo::URL::~URL() {
-
+    ;
 }
 
 const string & LobKo::URL::getHost() const {

@@ -6,7 +6,6 @@
  */
 
 #include "Content_Length.h"
-#include "src/RecvBysocketQueue.h"
 
 LobKo::Content_Length::Content_Length(const string& name, const string& value) :
 AHeader(name, value) {
@@ -23,8 +22,6 @@ const string& LobKo::Content_Length::name() {
 }
 
 unsigned int LobKo::Content_Length::getValueAsDecimalNumber() const {
-    //    std::string::reverse_iterator iter = value_.rbegin();
-    //    std::string::reverse_iterator iterEnd = value_.rend();
     char string_size = value_.size();
 
     unsigned int result_number = 0;

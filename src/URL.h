@@ -9,20 +9,18 @@
 #define	URL_H
 
 #include <string>
+#include <cassert>
 #include <map>
 #include <cstdint>
-#include <assert.h>
-
-#include"utils.h"
 #include <stdexcept>
 #include <sstream>
+#include <arpa/inet.h>   //htons
 
 using std::string;
 using std::uint16_t;
 using std::map;
 
 namespace LobKo {
-    //class QuerySring;
 
     class URL {
         friend std::ostream& LobKo::operator<<(std::ostream& out, const URL& url);
@@ -38,9 +36,9 @@ namespace LobKo {
         const string& getPath() const;
         const uint16_t& getPort() const;
         inline const string& originalRequestString() const;
-        //void fill();
-        //URL(const URL& orig);
     private:
+        URL(const URL& orig);
+        
         string schema_;
         string username_;
         string password_;
@@ -62,7 +60,7 @@ namespace LobKo {
             map<string, string> data_; //name value
         } *query_string_; //todo
         string fragment_id; //todo
-    private:
+    
         inline bool isAllowedSymb(char c) const;
         inline bool isDigit(char c) const;
         /**

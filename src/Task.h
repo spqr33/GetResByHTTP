@@ -20,7 +20,6 @@ namespace LobKo {
             TASK_DUMMY, TASK_ERROR, TASK_SUCCESS
         };
         Task(string remoteResourcePath, string localFileName);
-        //Task(const Task& orig);
         virtual ~Task();
         inline const string& remoteResource() const;
         inline const string& localFileName() const;
@@ -48,7 +47,5 @@ void LobKo::Task::setTaskResult(taskResult res) {
 LobKo::Task::taskResult LobKo::Task::getTaskResult() const {
     return result_;
 }
-
-
 #endif	/* TASK_H */
 

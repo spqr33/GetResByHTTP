@@ -14,9 +14,6 @@ currentPos_(start_),
 watermark_(start_) {
 }
 
-//JumboBuff::JumboBuff(const JumboBuff& orig) {
-//}
-
 LobKo::JumboBuff::~JumboBuff() {
     delete [] start_;
 }

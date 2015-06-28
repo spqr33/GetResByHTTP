@@ -32,15 +32,9 @@ namespace LobKo {
         vector<Task> tasksVec_;
     };
 
-    class TaskHolderBuilder {
-    public:
-        TaskHolderBuilder();
-        ~TaskHolderBuilder();
-
-        static shared_ptr<TaskHolder> build();
+    struct TaskHolderBuilder {
         static shared_ptr<TaskHolder> build(ifstream& load_tasks_from_file);
-
     };
-}
+};
 #endif	/* TASKHOLDER_H */
 

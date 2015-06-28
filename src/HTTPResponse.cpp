@@ -7,7 +7,7 @@
 
 #include "HTTPResponse.h"
 #include "utils.h"
-#include <algorithm>
+#include <algorithm> //transform
 
 LobKo::HTTPResponse::HTTPResponse(shared_ptr<HTTPRequest>& sp) :
 spHTTPRequest_(sp) {
@@ -225,7 +225,6 @@ LobKo::HTTPResponse::parseStatus LobKo::HTTPResponse::parseResponseLine() {
                 parse_state = state_response_line_finished;
 
                 assert(p_proto_start_pos_ && p_response_code_digit_ && p_reason_phrase_);
-                //p_proto_start_pos_ = p_response_code_digit_ = p_reason_phrase_ = NULL;
 
                 return PARSE_SUCCESS;
                 break;
@@ -262,9 +261,7 @@ LobKo::HTTPResponse::parseStatus LobKo::HTTPResponse::parseResponseLine() {
                         reason_phrase_.append(std::string(p_reason_phrase_, cur_pos - p_reason_phrase_));
                         break;
                     default:
-                        //assert("End of buffer. Unknown state");
-                        //break;
-                        ;
+                       ;
                 }
             } // end if ( parse_state == state_parse_response_line ) {
 
@@ -283,16 +280,11 @@ LobKo::HTTPResponse::parseStatus LobKo::HTTPResponse::parseHeaderLine() {
     const char* &water_mark = spJumboBuff_->watermark_;
     const char* const end = spJumboBuff_->start_ + spJumboBuff_->buffSize_;
 
-    //    if ( parse_state != state_response_line_finished ||
-    //            parse_state != state_headers ) {
-    //        return PARSE_NOT_CORRESPOND_STATE;
-    //    }
     parse_state = state_headers;
 
     for ( char ch; cur_pos < water_mark; ) {
         ch = *cur_pos;
 
-        //switch (parse_response_line_state) {
         switch (parse_headers_state) {
             case state_parse_headers_first_header_colon_whitespace_symb_finished:
                 curr_header_name = "";
@@ -453,7 +445,7 @@ LobKo::HTTPResponse::parseStatus LobKo::HTTPResponse::parseHeaderLine() {
             return PARSE_BUFFER_END_REACHED;
         };
 
-    } //end for (  char ch; cur_pos < water_mark;  ) {
+    } //end for (char ch; cur_pos < water_mark;) 
 
     return PARSE_WATERMARK_REACHED;
 }

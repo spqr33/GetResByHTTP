@@ -12,26 +12,19 @@
 
 LobKo::QueuesMaster::QueuesMaster(shared_ptr<HTTPRequest> initialisationHTTPRequest) :
 reqQueue_(new HTTPRequestQueue(this)),
-errQueue_(new HTTPRequestErrorsQueue)
-//,openSockSet_(new OpenedSocketHolder)
-,sendQueue_(new SendBySocketQueue(this)),
+errQueue_(new HTTPRequestErrorsQueue),
+sendQueue_(new SendBySocketQueue(this)),
 recvQueue_(new RecvBySocketQueue(this)),
 initialisationHTTPRequest_(initialisationHTTPRequest) {
     reqQueue_->add(initialisationHTTPRequest_);
 }
 
 LobKo::QueuesMaster::QueuesMaster(shared_ptr<TaskHolder> spTaskHolder) : reqQueue_(new HTTPRequestQueue(this)),
-errQueue_(new HTTPRequestErrorsQueue)
-//,openSockSet_(new OpenedSocketHolder)
-,sendQueue_(new SendBySocketQueue(this)),
+errQueue_(new HTTPRequestErrorsQueue),
+sendQueue_(new SendBySocketQueue(this)),
 recvQueue_(new RecvBySocketQueue(this)) {
     loadTasks(spTaskHolder);
 }
-
-
-
-//QueuesMaster::QueuesMaster(const QueuesMaster& orig) {
-//}
 
 LobKo::QueuesMaster::~QueuesMaster() {
     ;
@@ -41,8 +34,6 @@ void LobKo::QueuesMaster::loadTasks(shared_ptr<TaskHolder> spTaskHolder) {
     if ( spTaskHolder.get() != NULL ) {
         vector<Task>::iterator iterVec = spTaskHolder->getTasks().begin();
         vector<Task>::iterator iterVecEnd = spTaskHolder->getTasks().end();
-
-        //shared_ptr<HTTPRequest> spHTTPRequest;
 
         for (; iterVec != iterVecEnd; ++iterVec ) {
             try {
@@ -71,7 +62,7 @@ void LobKo::QueuesMaster::process(int simultaneous_resources_recvng) {
 
     int size_HTTPRequestQueue = reqQueue_->getQueueSize();
     int size_RecvBySocketQueue = recvQueue_->getQueueSize();
-    int size_SendBySocketQueue; // = recvQueue_->getQueueSize();
+    int size_SendBySocketQueue;
     while (cannot_exit == true) {
 
         int n;

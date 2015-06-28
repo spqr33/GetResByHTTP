@@ -13,9 +13,6 @@ maxSize_(holderSize) {
     ;
 }
 
-//LobKo::HTTPRequestErrorsQueue::HTTPRequestErrorsQueue(const HTTPRequestErrorsQueue& orig) {
-//}
-
 LobKo::HTTPRequestErrorsQueue::~HTTPRequestErrorsQueue() {
 
 }

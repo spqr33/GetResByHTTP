@@ -161,7 +161,7 @@ bool LobKo::HTTPResponse::isAllowedReasonPhraseSymb(char c) const {
     if (c >= '0' && c <= '9') {
         return true;
     }
-    if (c == '.' || c == '-' || c == '_' || c == '+') {
+    if (c == ' ' || c == '.' || c == '-' || c == '_' || c == '+') {
         return true;
     }
     return false;

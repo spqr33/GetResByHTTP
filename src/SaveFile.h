@@ -11,7 +11,7 @@
 #include "Action.h"
 #include <string>
 #include <fstream>
-
+#include <cstdint>
 
 namespace LobKo {
 
@@ -20,16 +20,20 @@ namespace LobKo {
         explicit SaveFile(const std::string& saveTo_FileName); //throw std::runtime_error
         virtual ~SaveFile();
 
-        virtual result takeData(const char* const startBuf, const char* const endBuf, uint64_t totaDataSize);
+        virtual result takeData(const char* const startBuf, const char* const endBuf, std::uint64_t totaDataSize);
+
+        inline const std::string& get_file_name() const;
     private:
         SaveFile(const SaveFile& orig);
-        
-        uint64_t alreadyBytesSaved;
-        std::ofstream fout;
-        
-        
-    };
 
+        std::uint64_t alreadyBytesSaved;
+        std::ofstream fout;
+        std::string saveTo_FileName_;
+    };
+};
+
+const std::string& LobKo::SaveFile::get_file_name() const {
+    return saveTo_FileName_;
 }
 #endif	/* SAVEFILE_H */
 

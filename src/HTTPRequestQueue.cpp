@@ -7,7 +7,6 @@
 
 #include "HTTPRequestQueue.h"
 #include <utility>
-
 #include <sys/types.h>          /* See NOTES */
 #include <sys/socket.h>
 #include <strings.h> // bzero
@@ -16,9 +15,6 @@ LobKo::HTTPRequestQueue::HTTPRequestQueue(QueuesMaster* qmaster) :
 qMaster_(*qmaster) {
     assert(qmaster && "HTTPRequestQueue(): QueuesMaster is zero");
 }
-
-//HTTPRequestQueue::HTTPRequestQueue(const HTTPRequestQueue& orig) {
-//}
 
 LobKo::HTTPRequestQueue::~HTTPRequestQueue() {
 }
@@ -50,10 +46,15 @@ void LobKo::HTTPRequestQueue::process(int requestsNumber) {
 
         int socketFD;
         if ( (socketFD = getConnectedSocket(ip, port)) < 0 ) { //Error while connecting
+#ifndef NDEBUG
+            std::cout << "Unable to connect to host "
+                    << spHTTPRequest->getURL()->getHost() << std::endl;
+#endif
             qMaster_.reqErrorsQ()->add(spHTTPRequest);
         } else {
-#ifdef HTTPREQUESTQUEUE_H_DEBUG
-            std::cout << "Socket was created successfully" << std::endl;
+#ifndef NDEBUG
+            std::cout << "Host " << spHTTPRequest->getURL()->getHost() 
+                    << " connected " << std::endl;
 #endif
             qMaster_.sendQ()->add(socketFD, spHTTPRequest);
         }
@@ -74,15 +75,9 @@ int LobKo::HTTPRequestQueue::getConnectedSocket(in_addr_t remoteIP, uint16_t rem
     serverAddr.sin_port = remotePort;
     serverAddr.sin_addr.s_addr = remoteIP;
 
-#ifdef HTTPREQUESTQUEUE_H_DEBUG
-    std::cout << "getConnectedSocket() connect to: " << remoteIP << std::endl;
-#endif
     if ( connect(socketfd, (struct sockaddr*) &serverAddr, sizeof (serverAddr)) < 0 ) {
         close(socketfd);
         return -1;
     }
-#ifdef HTTPREQUESTQUEUE_H_DEBUG
-    std::cout << "getConnectedSocket() is connected to: " << remoteIP << std::endl;
-#endif
     return socketfd;
 }

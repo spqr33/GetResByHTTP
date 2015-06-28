@@ -10,10 +10,11 @@
 
 LobKo::HeadersHolder::HeadersHolder() :
 isResultActual_(false) {
-
+    ;
 }
 
 LobKo::HeadersHolder::~HeadersHolder() {
+    ;
 }
 
 void LobKo::HeadersHolder::add(shared_ptr<AHeader> sp) {
@@ -30,7 +31,7 @@ const string& LobKo::HeadersHolder::getAllHeaderWithValue() const {
 
         result_ = "";
         for (; kIter != kIterEnd; ++kIter ) {
-            assert((*kIter).get() && "getAllHeaderWithValue, ZERO poiter");
+            assert((*kIter).get() && "HeadersHolder::getAllHeaderWithValue(), ZERO poiter");
             result_ = (*kIter)->getName();
             result_ += ": ";
             result_ += (*kIter)->getValue();

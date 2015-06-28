@@ -12,7 +12,6 @@
 #include "HTTPRequest.h"
 #include <list>
 
-
 namespace LobKo {
 
     class HTTPRequestErrorsQueue {

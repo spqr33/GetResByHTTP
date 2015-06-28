@@ -6,13 +6,14 @@
  */
 
 #include "IPAdress.h"
-#include <typeinfo>
 
 LobKo::IPAdress::IPAdress() {
+    ;
 }
 
 
 LobKo::IPAdress::~IPAdress() {
+    ;
 }
 
 void LobKo::IPAdress::add(struct in_addr* p) {
@@ -45,4 +46,4 @@ std::ostream& LobKo::operator<<(std::ostream& out, IPAdress& ipAdress) {
     }
 
     return out;
-};
+}

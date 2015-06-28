@@ -32,7 +32,6 @@ using std::string;
  */
 int main(int argc, char** argv) {
     ////////////////////////////////////
-
     if ( argc < 3 ) {
         std::cerr << " Usage:\t\t " << argv[0] << "\t    simultaneous_downloads\t" << " /path/to/taskFile" << std::endl;
         return EXIT_FAILURE;
@@ -51,6 +50,8 @@ int main(int argc, char** argv) {
         return EXIT_FAILURE;
     }
     shared_ptr<TaskHolder> spTaskHolder = TaskHolderBuilder::build(dataFile);
+    dataFile.clear();
+    dataFile.close();
 
     QueuesMaster qmaster(spTaskHolder);
     qmaster.process(simultaneous_download_number);

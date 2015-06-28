@@ -7,14 +7,11 @@
 
 #ifndef SENDBYSOCKETQUEUE_H
 #define	SENDBYSOCKETQUEUE_H
-#define SENDBYSOCKETQUEUE_H_DEBUG
-
 
 #include <memory>
+#include <map>
 #include "HTTPRequest.h"
 #include "QueuesMaster.h"
-#include <queue>
-#include <map>
 
 namespace LobKo {
     class QueuesMaster;
