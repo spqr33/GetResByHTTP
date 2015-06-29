@@ -7,7 +7,7 @@
 
 #include "HTTPRequest.h"
 #include "utils.h"
-#include "headers/HostHeader.h"
+#include "HostHeader.h"
 
 LobKo::HTTPRequest::HTTPRequest(const HTTPRequestType& reqType,
         shared_ptr<URL> spURL,

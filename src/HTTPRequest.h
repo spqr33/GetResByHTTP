@@ -11,7 +11,7 @@
 #include <string>
 #include <memory>
 #include "URL.h"
-#include "headers/HeadersHolder.h"
+#include "HeadersHolder.h"
 #include "HTTPResponse.h"
 #include "Action.h"
 
