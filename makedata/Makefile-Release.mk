@@ -17,8 +17,8 @@ CCC=g++
 CXX=g++
 
 #Compiler Flags
-CCFLAGS=-O2 -std=c++0x
-CXXFLAGS=-O2 -std=c++0x
+CCFLAGS=-O2 -std=c++0x -DNDEBUG
+CXXFLAGS=-O2 -std=c++0x -DNDEBUG
 
 #Directory for Object files - OBJECTDIR
 #Object Files - OBJECTFILES
