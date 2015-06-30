@@ -1,0 +1,23 @@
+General purpose of the program is a getting resources by HTTP Protocol.
+Program has NOT any warranties, and you can/should/must/may use it AS IS.
+
+Usage:
+./getResByHTTP	    simultaneous_downloads	 /path/to/taskFile
+
+It is possible to download at the same time up to 
+simultaneous_downloads resources.
+
+You need to provide also a task File, this one must have the following structure:
+URL  localFileName
+You can use comment lines followed by #.
+  
+
+The program downloads resources only if server answers with 200 status and the
+answer has a Content-Length header.
+Otherwise the program reports about an inability of download this resource.
+
+You can build also Release or Debug version(Release is default).
+Change DEFAULTCONF=Release line to DEFAULTCONF=Debug in makefile.
+Debug version is bigger, but provides additional info.
+There is clean target in makefile. You can use it to clean the current
+configuration build directory. 
